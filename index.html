@@ -72,7 +72,7 @@
 	</section>
 	<section id="about" class="about">
 		<div class="section-heading text-center">
-			<h2>about me</h2>
+			<h2 id="davi-about-me">about me</h2>
 		</div>
 		<div class="container">
 			<div class="about-content">
@@ -128,14 +128,15 @@
 					<div class="col-sm-4">
 						<div class="single-horizontal-timeline">
 							<div class="experience-time">
-								<h2>Graduated in 2021</h2>
-								<h3>Bachelor's Degree in Mechanical Engineering </h3>
+								<h2 id="davi-graduation-date">Graduated in 2021</h2>
+								<h3 id="davi-graduation-field" style="margin-bottom: 10px;">Bachelor's Degree in Mechanical Engineering </h3>
+								
 							</div>
 							<div class="timeline">
 								<div class="timeline-content">
-									<h4 class="title">Federal University of Ceará (UFC)</h4>
-									<h5>Ceará, Brazil</h5>
-									<p class="description">
+									<h4 class="title" id="davi-graduation-university">Federal University of Ceará (UFC)</h4>
+									<h5 id="davi-location">Ceará, Brazil</h5>
+									<p class="description" id="davi-graduation-skills">
 										Completed my degree in Mechanical Engineering, providing a strong foundation in
 										problem-solving and analytical thinking.
 									</p>
@@ -430,19 +431,35 @@
 			}
 		}
 
+		//Work on this function below
 		function changeLanguageParagraph(lang) {
 			const daviPresentationElement = document.getElementById('davi-presentation');
 			const daviStoryElement = document.getElementById('davi-story');
 			const daviEducationTitle = document.getElementById('davi-education-title');
+			const daviGraduationDate = document.getElementById('davi-graduation-date');
+			const daviGraduationField = document.getElementById('davi-graduation-field');
+			const daviGraduationUniversity = document.getElementById('davi-graduation-university');
+			const daviAboutMe = document.getElementById('davi-about-me');
+			const daviLocation = document.getElementById('davi-location');
 
 			if (isEnglish) {
 				daviPresentationElement.textContent = 'I am a Junior Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.';
 				daviStoryElement.textContent = 'My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.';
 				daviEducationTitle.textContent = 'Education';
+				daviGraduationDate.textContent = 'Graduated in 2021';
+				daviGraduationField.textContent = 'Bachelor\'s Degree in Mechanical Engineering';
+				daviGraduationUniversity.textContent = 'Federal University of Ceará (UFC)';
+				daviAboutMe.textContent = 'About me';
+				daviLocation.textContent = 'Ceará, Brazil';
 			} else {
 				daviPresentationElement.textContent = 'Sou um desenvolvedor blockchain júnior com experiência em HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js e Hardhat.';
 				daviStoryElement.textContent = 'Minha paixão por programação, despertada durante a pandemia, me levou a mudar minha carreira de Engenharia Mecânica para Desenvolvimento Blockchain e Web3. Na 2ndMarket, adquiri experiência prática escrevendo contratos inteligentes em Solidity para blockchains compatíveis com EVM e construindo aplicações descentralizadas (DApps) com TypeScript, Next.js e Ethers.js.';
 				daviEducationTitle.textContent = 'Formação';
+				daviGraduationDate.textContent = 'Formado em 2021';
+				daviGraduationField.textContent = 'Bacharelado em Engenharia Mecânica';
+				daviGraduationUniversity.textContent = 'Universidade Federal do Ceará (UFC)';
+				daviAboutMe.textContent = 'Sobre mim';
+				daviLocation.textContent = 'Ceará, Brasil';
 			}
 		}
 
