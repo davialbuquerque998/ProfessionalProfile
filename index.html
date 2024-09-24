@@ -59,7 +59,7 @@
                         <div class="header-text">
                             <h2 style="font-size: 34px;">Davi <br> Albuquerque <span>.</span></h2>
                             <p data-translate="job-title">Junior Blockchain Developer</p>
-                            <a href="assets/download/davi_resume.pdf" download data-translate="download-resume">download resume</a>
+                            <a href="assets/download/davi_resume.pdf" download data-translate="download-resume" id="davi-resume-download-link">download resume</a>
                         </div>
                     </div>
                 </div>
@@ -74,8 +74,8 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="single-about-txt">
-								<h3>I am a Junior Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.</h3>
-								<p>My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.</p>
+								<h3 id="davi-presentation">I am a Junior Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.</h3>
+								<p id="davi-story">My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.</p>
 							</div>
 						</div>
 						<div class="col-sm-offset-1 col-sm-5">
@@ -386,12 +386,27 @@
 				if(isEnglish){
 					document.getElementById('us-flag-element').style.display = 'none';
 					document.getElementById('br-flag-element').style.display = 'block';
+					document.getElementById('davi-resume-download-link').href = `assets/download/davi_resume.pdf`;
 				} else {
 					document.getElementById('us-flag-element').style.display = 'block';
 					document.getElementById('br-flag-element').style.display = 'none';
+					document.getElementById('davi-resume-download-link').href = `assets/download/davi_cv.pdf`;
 				}
+				
+				changeLanguageParagraph();
 				isEnglish = !isEnglish;
             }
+
+			function changeLanguageParagraph() {
+				if(isEnglish){
+					document.getElementById('davi-presentation').innerText = `I am a Junior Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.`
+					document.getElementById('davi-story').innerText = `My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.`;
+				} else {
+					document.getElementById('davi-presentation').innerText = `Sou um desenvolvedor blockchain júnior com experiência em HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js e Hardhat.`
+					document.getElementById('davi-story').innerText = `Minha paixão por programação, despertada durante a pandemia, me levou a mudar minha carreira de Engenharia Mecânica para Desenvolvimento Blockchain e Web3. Na 2ndMarket, adquiri experiência prática escrevendo contratos inteligentes em Solidity para blockchains compatíveis com EVM e construindo aplicações descentralizadas (DApps) com TypeScript, Next.js e Ethers.js.
+`
+				}
+			}
 
             // Set initial language
             changeLanguage('en');
