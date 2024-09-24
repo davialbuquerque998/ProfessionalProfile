@@ -858,4 +858,21 @@ span.single-timeline-horizontal.spacial-horizontal-line {width: 88px;}
     0%   {bottom:0px;}
     100%  {bottom:7px;}
 }
+
+.language-selector {
+    display: flex;
+    align-items: center;
+}
+.language-selector a {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+.language-selector img {
+    width: 20px;
+    margin-right: 5px;
+}
 /*========================Thank you=================

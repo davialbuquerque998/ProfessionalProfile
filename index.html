@@ -19,43 +19,52 @@
     </head>
 	<body>
 		<header class="top-area">
-			<div class="header-area">
-			    <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
-			        <div class="container">
-			            <div class="navbar-header">
-			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-			                    <i class="fa fa-bars"></i>
-			                </button>
-			                <a class="navbar-brand" href="index.html">Welcome</a>
-			            </div>
-			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-								<li class="smooth-menu active"><a href="#home">home</a></li>
-								<li class="smooth-menu"><a href="#about">about</a></li>
-								<li class="smooth-menu"><a href="#education">education</a></li>
-								<li class="smooth-menu"><a href="#skills">skills</a></li>
-								<li class="smooth-menu"><a href="#contact">contact</a></li>
-							</ul>
-			            </div>
-			        </div>
-			    </nav>
-			</div>
-		    <div class="clearfix"></div>
-		</header>
-		<section id="welcome-hero" class="welcome-hero">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 text-center">
-						<div class="header-text">
-							<h2 style="font-size: 34px;">Davi <br> Albuquerque <span>.</span></h2>
-							<p>Junior Blockchain Developer</p>
-							<a href="assets/download/davi_resume.pdf" download>download resume</a>
-						</div>
-					</div>
-				</div>
-			</div>
+            <div class="header-area">
+                <nav class="navbar navbar-default bootsnav navbar-fixed dark no-background">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <a class="navbar-brand" href="index.html" data-translate="welcome">Welcome</a>
+                        </div>
+                        <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+                                <li class="smooth-menu"><a href="#about" data-translate="about">about</a></li>
+                                <li class="smooth-menu"><a href="#education" data-translate="education">education</a></li>
+                                <li class="smooth-menu"><a href="#skills" data-translate="skills">skills</a></li>
+                                <li class="smooth-menu"><a href="#contact" data-translate="contact">contact</a></li>
+                                <li class="language-selector" style="margin-left: -10px;">
+                                    <a onclick="changeLanguage('en')" id="us-flag-element" style="display: none;">
+                                        <img src="assets/images/us-flag.png" alt="US Flag" >
+                                        EN-US
+                                    </a>
+                                    <a onclick="changeLanguage('pt-br')" id="br-flag-element">
+                                        <img src="assets/images/br-flag.png" alt="Brazilian Flag">
+                                        PT-BR
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="clearfix"></div>
+        </header>
 
-		</section>
+        <section id="welcome-hero" class="welcome-hero">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="header-text">
+                            <h2 style="font-size: 34px;">Davi <br> Albuquerque <span>.</span></h2>
+                            <p data-translate="job-title">Junior Blockchain Developer</p>
+                            <a href="assets/download/davi_resume.pdf" download data-translate="download-resume">download resume</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 		<section id="about" class="about">
 			<div class="section-heading text-center">
 				<h2>about me</h2>
@@ -320,7 +329,7 @@
 					</p>
 				</div>
 			</div>
-
+			
 			<div id="scroll-Top">
 				<div class="return-to-top">
 					<i class="fa fa-angle-up " id="scroll-top" ></i>
@@ -338,5 +347,54 @@
         <script src="assets/js/owl.carousel.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
         <script src="assets/js/custom.js"></script>
+		<script>
+            const translations = {
+                'en': {
+                    'welcome': 'Welcome',
+                    'home': 'home',
+                    'about': 'about',
+                    'education': 'education',
+                    'skills': 'skills',
+                    'contact': 'contact',
+                    'job-title': 'Junior Blockchain Developer',
+                    'download-resume': 'download resume',
+                    // Add more translations as needed
+                },
+                'pt-br': {
+                    'welcome': 'Bem-vindo',
+                    'home': 'início',
+                    'about': 'sobre',
+                    'education': 'educação',
+                    'skills': 'habilidades',
+                    'contact': 'contato',
+                    'job-title': 'Desenvolvedor Blockchain Júnior',
+                    'download-resume': 'baixar currículo',
+                    // Add more translations as needed
+                }
+            };
+
+			let isEnglish = true;
+
+			
+
+            function changeLanguage(lang) {
+                document.documentElement.lang = lang;
+                document.querySelectorAll('[data-translate]').forEach(element => {
+                    const key = element.getAttribute('data-translate');
+                    element.textContent = translations[lang][key] || element.textContent;
+                });
+				if(isEnglish){
+					document.getElementById('us-flag-element').style.display = 'none';
+					document.getElementById('br-flag-element').style.display = 'block';
+				} else {
+					document.getElementById('us-flag-element').style.display = 'block';
+					document.getElementById('br-flag-element').style.display = 'none';
+				}
+				isEnglish = !isEnglish;
+            }
+
+            // Set initial language
+            changeLanguage('en');
+        </script>
     </body>
 </html>
