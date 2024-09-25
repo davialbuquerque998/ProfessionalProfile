@@ -8,7 +8,7 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&amp;subset=devanagari,latin-ext"
 		rel="stylesheet">
-	<title>Davi Arruda Navarro Albuquerque - Junior Blockchain Developer</title>
+	<title>Davi Arruda Navarro Albuquerque - Blockchain Developer</title>
 	<link rel="shortcut icon" type="image/icon" href="assets/logo/logo1.png" />
 	<link rel="stylesheet" href="assets/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/flaticon.css">
@@ -62,7 +62,7 @@
 				<div class="col-md-12 text-center">
 					<div class="header-text">
 						<h2 style="font-size: 34px;">Davi <br> Albuquerque <span>.</span></h2>
-						<p data-translate="job-title">Junior Blockchain Developer</p>
+						<p data-translate="job-title">Blockchain Developer</p>
 						<a href="assets/download/davi_resume.pdf" download data-translate="download-resume"
 							id="davi-resume-download-link">download resume</a>
 					</div>
@@ -79,7 +79,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="single-about-txt">
-							<h3 id="davi-presentation">I am a Junior Blockchain Developer with experience in HTML, CSS,
+							<h3 id="davi-presentation">I am a Blockchain Developer with experience in HTML, CSS,
 								JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and
 								Hardhat.</h3>
 							<p id="davi-story">My passion for coding, sparked during the pandemic, led me to pivot my
@@ -129,12 +129,14 @@
 						<div class="single-horizontal-timeline">
 							<div class="experience-time">
 								<h2 id="davi-graduation-date">Graduated in 2021</h2>
-								<h3 id="davi-graduation-field" style="margin-bottom: 10px;">Bachelor's Degree in Mechanical Engineering </h3>
-								
+								<h3 id="davi-graduation-field" style="margin-bottom: 10px;">Bachelor's Degree in
+									Mechanical Engineering </h3>
+
 							</div>
 							<div class="timeline">
 								<div class="timeline-content">
-									<h4 class="title" id="davi-graduation-university">Federal University of Ceará (UFC)</h4>
+									<h4 class="title" id="davi-graduation-university">Federal University of Ceará (UFC)
+									</h4>
 									<h5 id="davi-location">Ceará, Brazil</h5>
 									<p class="description" id="davi-graduation-skills">
 										Completed my degree in Mechanical Engineering, providing a strong foundation in
@@ -151,7 +153,7 @@
 	<section id="skills" class="skills">
 		<div class="skill-content">
 			<div class="section-heading text-center">
-				<h2>skills</h2>
+				<h2 id="davi-skills-title">skills</h2>
 			</div>
 			<div class="container">
 				<div class="row">
@@ -266,7 +268,7 @@
 	</section>
 	<section id="contact" class="contact">
 		<div class="section-heading text-center">
-			<h2>contact me (still working on the backend)</h2>
+			<h2 id="davi-contact-me-title">contact me (still working on the backend)</h2>
 		</div>
 		<div class="container">
 			<div class="contact-content">
@@ -308,7 +310,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<div class="single-contact-btn">
-												<a class="contact-btn" href="#" role="button">submit</a>
+												<a class="contact-btn" href="#" role="button" id="davi-submit-button">submit</a>
 											</div>
 										</div>
 									</div>
@@ -321,7 +323,7 @@
 							<div class="contact-adress">
 								<div class="contact-add-head">
 									<h3>Davi Arruda Navarro Albuquerque</h3>
-									<p>Junior Blockchain Developer</p>
+									<p>Blockchain Developer</p>
 								</div>
 								<div class="contact-add-info">
 									<div class="single-contact-add-info">
@@ -352,7 +354,7 @@
 	<footer id="footer-copyright" class="footer-copyright">
 		<div class="container">
 			<div class="hm-footer-copyright text-center">
-				<p>
+				<p id="davi-copyright">
 					&copy; Copyright Davi Arruda Navarro Albuquerque. Designed and developed by <a
 						href="https://www.themesine.com/" target="_blank">themesine</a>
 				</p>
@@ -386,17 +388,17 @@
 				education: 'education',
 				skills: 'skills',
 				contact: 'contact',
-				'job-title': 'Junior Blockchain Developer',
+				'job-title': 'Blockchain Developer',
 				'download-resume': 'download resume',
 			},
 			'pt-br': {
 				welcome: 'Bem-vindo',
 				home: 'início',
 				about: 'sobre',
-				education: 'educação',
+				education: 'Formação',
 				skills: 'habilidades',
 				contact: 'contato',
-				'job-title': 'Desenvolvedor Blockchain Júnior',
+				'job-title': 'Desenvolvedor Blockchain',
 				'download-resume': 'baixar currículo',
 			},
 		};
@@ -441,9 +443,17 @@
 			const daviGraduationUniversity = document.getElementById('davi-graduation-university');
 			const daviAboutMe = document.getElementById('davi-about-me');
 			const daviLocation = document.getElementById('davi-location');
+			const daviGraduationSkills = document.getElementById('davi-graduation-skills');
+			const daviSkillsTitle = document.getElementById('davi-skills-title');
+			const daviContactMeTitle = document.getElementById('davi-contact-me-title');
+			const nameInputField = document.getElementById('name');
+			const subjectInputField = document.getElementById('subject');
+			const messageInputField = document.getElementById('comment');
+			const daviSubmitButton = document.getElementById('davi-submit-button');
+			const daviCopyRight = document.getElementById('davi-copyright');
 
 			if (isEnglish) {
-				daviPresentationElement.textContent = 'I am a Junior Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.';
+				daviPresentationElement.textContent = 'I am a Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.';
 				daviStoryElement.textContent = 'My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.';
 				daviEducationTitle.textContent = 'Education';
 				daviGraduationDate.textContent = 'Graduated in 2021';
@@ -451,6 +461,16 @@
 				daviGraduationUniversity.textContent = 'Federal University of Ceará (UFC)';
 				daviAboutMe.textContent = 'About me';
 				daviLocation.textContent = 'Ceará, Brazil';
+				daviGraduationSkills.textContent = `Completed my degree in Mechanical Engineering, providing a strong foundation in problem-solving and analytical thinking.`;
+				daviSkillsTitle.textContent = `Skills`;
+				daviContactMeTitle.textContent = 'contact me (still working on the backend)';
+				nameInputField.placeholder = "Name*";
+				subjectInputField.placeholder = "Subject*";
+				messageInputField.placeholder = "Message*";
+				daviSubmitButton.textContent = "Submit";
+				document.querySelector(".contact-add-head > p").textContent = "Blockchain Developer";
+				daviCopyRight.textContent = "© Copyright Davi Arruda Navarro Albuquerque. Designed and developed by themesine";
+
 			} else {
 				daviPresentationElement.textContent = 'Sou um desenvolvedor blockchain júnior com experiência em HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js e Hardhat.';
 				daviStoryElement.textContent = 'Minha paixão por programação, despertada durante a pandemia, me levou a mudar minha carreira de Engenharia Mecânica para Desenvolvimento Blockchain e Web3. Na 2ndMarket, adquiri experiência prática escrevendo contratos inteligentes em Solidity para blockchains compatíveis com EVM e construindo aplicações descentralizadas (DApps) com TypeScript, Next.js e Ethers.js.';
@@ -460,6 +480,16 @@
 				daviGraduationUniversity.textContent = 'Universidade Federal do Ceará (UFC)';
 				daviAboutMe.textContent = 'Sobre mim';
 				daviLocation.textContent = 'Ceará, Brasil';
+				daviGraduationSkills.textContent = `Concluí minha graduação em Engenharia Mecânica, fornecendo uma base sólida em resolução de problemas e pensamento analítico.`;
+				daviSkillsTitle.textContent = `Habilidades`;
+				
+				daviContactMeTitle.textContent = 'Contato (ainda em fase de desenvolvimento)';
+				nameInputField.placeholder = "Nome*";
+				subjectInputField.placeholder = "Assunto*";
+				messageInputField.placeholder = "Mensagem*";
+				daviSubmitButton.textContent = "Enviar";
+				document.querySelector(".contact-add-head > p").textContent = "Desenvolvedor Blockchain";
+				daviCopyRight.textContent = "© Todos os Direitos Reservados Davi Arruda Navarro Albuquerque. Projetado e desenvolvido por themesine";
 			}
 		}
 
@@ -467,5 +497,4 @@
 		changeLanguage('en');
 	</script>
 </body>
-
 </html>
