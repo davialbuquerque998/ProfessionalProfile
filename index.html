@@ -311,11 +311,12 @@
 										<div class="col-sm-12">
 											<div class="single-contact-btn">
 												<button type="submit" class="contact-btn"
-													id="submitButton">submit</button>
+													id="submitButton" style="width: 100%;">Submit</button>
 											</div>
 										</div>
 									</div>
 								</form>
+								<div id="formStatus" class="mt-3" style="display: none;"></div>
 							</div>
 						</div>
 					</div>
@@ -434,7 +435,6 @@
 			}
 		}
 
-		//Work on this function below
 		function changeLanguageParagraph(lang) {
 			const daviPresentationElement = document.getElementById('davi-presentation');
 			const daviStoryElement = document.getElementById('davi-story');
@@ -497,34 +497,100 @@
 		// Set initial language
 		changeLanguage('en');
 
-		document.getElementById('contactForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent the form from reloading the page
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-				subject:document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
+		document.addEventListener('DOMContentLoaded', function () {
+			const form = document.getElementById('contactForm');
+			const formStatus = document.getElementById('formStatus');
+			const submitButton = document.getElementById('submitButton');
 
-            try {
-                const response = await fetch('http://127.0.0.1:3000/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
+			form.addEventListener('submit', async function (event) {
+				event.preventDefault();
 
-                if (response.ok) {
-                    alert('Form submitted successfully!');
-                } else {
-                    alert('Error submitting form');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Something went wrong!');
-            }
-        });
+				// Disable submit button and show loading state
+				submitButton.disabled = true;
+				submitButton.textContent = 'Sending...';
+
+				// Basic form validation
+				const name = document.getElementById('name').value.trim();
+				const email = document.getElementById('email').value.trim();
+				const subject = document.getElementById('subject').value.trim();
+				const message = document.getElementById('message').value.trim();
+
+				if (!name || !email || !subject || !message) {
+					showStatus('Please fill in all fields.', 'error');
+					resetSubmitButton();
+					return;
+				}
+
+				if (!isValidEmail(email)) {
+					showStatus('Please enter a valid email address.', 'error');
+					resetSubmitButton();
+					return;
+				}
+
+				const formData = { name, email, subject, message };
+
+				try {
+					const response = await fetch('http://127.0.0.1:3000/contact', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(formData),
+					});
+					
+					if (response.ok) {
+						if (isEnglish) {
+							showStatus('Thank you! Your message has been sent successfully.', 'success');
+						}
+						else {
+							showStatus('Muito obrigado! Sua mensagem foi enviada com sucesso!', 'success');
+						}
+						form.reset();
+					} else {
+						throw new Error('Server responded with an error');
+					}
+				} catch (error) {
+					console.error('Error:', error);
+					if (isEnglish) {
+						showStatus('Oops! Something went wrong. Please try again later.', 'error');
+					}
+					else{
+						showStatus('Oops! Algo deu errado, por favor, tente outra vez!',  'error');
+					}
+
+				} finally {
+					resetSubmitButton();
+				}
+			});
+
+			function isValidEmail(email) {
+				const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				return re.test(email);
+			}
+
+			function showStatus(message, type) {
+				formStatus.textContent = message;
+				formStatus.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
+				formStatus.style.display = 'block';
+
+				// Hide status message after 5 seconds
+				setTimeout(() => {
+					formStatus.style.display = 'none';
+				}, 5000);
+			}
+
+			function resetSubmitButton() {
+				submitButton.disabled = false;
+				if (isEnglish) {
+					submitButton.textContent = 'Submit';
+				}
+
+				else {
+					submitButton.textContent = 'Enviar';
+				}
+
+			}
+		});
 	</script>
 </body>
 
