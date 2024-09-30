@@ -13,7 +13,7 @@ const PORT: number = parseInt(`${process.env.PORT}`);
 
 const TO_ADDRESS:string = `${process.env.TO_ADDRESS}`;
 
-app.use(cors());
+app.use(cors({origin:"http://127.0.0.1:5500"}));
 app.use(morgan("tiny"));
 app.use(express.json());
 
@@ -37,7 +37,7 @@ app.post("/contact", [
     const {name, email, subject, message} = req.body;
 
     try {
-        await emailSender("davialbuquerque998@gmail.com", subject, message);
+        await emailSender(name, email, TO_ADDRESS, subject, message);
         console.log("It works, ieeei");
         res.status(200).send("It worked");
         return;
