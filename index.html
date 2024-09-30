@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -163,7 +164,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="50"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -175,7 +176,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="60"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -187,7 +188,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="60"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -199,7 +200,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="60"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -215,7 +216,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="90"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -227,7 +228,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="85"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -239,7 +240,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="50"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -251,7 +252,7 @@
 								<div class="single-progress-txt">
 									<div class="progress ">
 										<div class="progress-bar" role="progressbar" aria-valuenow="50"
-											aria-valuemin="10" aria-valuemax="100" >
+											aria-valuemin="10" aria-valuemax="100">
 
 										</div>
 									</div>
@@ -275,18 +276,18 @@
 					<div class="col-md-offset-1 col-md-5 col-sm-6">
 						<div class="single-contact-box">
 							<div class="contact-form">
-								<form>
+								<form id="contactForm">
 									<div class="row">
 										<div class="col-sm-6 col-xs-12">
 											<div class="form-group">
 												<input type="text" class="form-control" id="name" placeholder="Name*"
-													name="name">
+													name="name" required>
 											</div>
 										</div>
 										<div class="col-sm-6 col-xs-12">
 											<div class="form-group">
 												<input type="email" class="form-control" id="email" placeholder="Email*"
-													name="email">
+													name="email" required>
 											</div>
 										</div>
 									</div>
@@ -294,22 +295,23 @@
 										<div class="col-sm-12">
 											<div class="form-group">
 												<input type="text" class="form-control" id="subject"
-													placeholder="Subject" name="subject">
-											</div><!--/.form-group-->
-										</div><!--/.col-->
-									</div><!--/.row-->
+													placeholder="Subject" name="subject" required>
+											</div>
+										</div>
+									</div>
 									<div class="row">
 										<div class="col-sm-12">
 											<div class="form-group">
-												<textarea class="form-control" rows="8" id="comment"
-													placeholder="Message"></textarea>
+												<textarea class="form-control" rows="8" id="message"
+													placeholder="Message" name="message" required></textarea>
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-sm-12">
 											<div class="single-contact-btn">
-												<a class="contact-btn" href="#" role="button" id="davi-submit-button">submit</a>
+												<button type="submit" class="contact-btn"
+													id="submitButton">submit</button>
 											</div>
 										</div>
 									</div>
@@ -447,8 +449,8 @@
 			const daviContactMeTitle = document.getElementById('davi-contact-me-title');
 			const nameInputField = document.getElementById('name');
 			const subjectInputField = document.getElementById('subject');
-			const messageInputField = document.getElementById('comment');
-			const daviSubmitButton = document.getElementById('davi-submit-button');
+			const messageInputField = document.getElementById('message');
+			const submitButton = document.getElementById('submitButton');
 			const daviCopyRight = document.getElementById('davi-copyright');
 
 			if (isEnglish) {
@@ -466,7 +468,7 @@
 				nameInputField.placeholder = "Name*";
 				subjectInputField.placeholder = "Subject*";
 				messageInputField.placeholder = "Message*";
-				daviSubmitButton.textContent = "Submit";
+				submitButton.textContent = "Submit";
 				document.querySelector(".contact-add-head > p").textContent = "Blockchain Developer";
 				daviCopyRight.textContent = "© Copyright Davi Arruda Navarro Albuquerque. Designed and developed by themesine";
 
@@ -481,12 +483,12 @@
 				daviLocation.textContent = 'Ceará, Brasil';
 				daviGraduationSkills.textContent = `Concluí minha graduação em Engenharia Mecânica, fornecendo uma base sólida em resolução de problemas e pensamento analítico.`;
 				daviSkillsTitle.textContent = `Habilidades`;
-				
+
 				daviContactMeTitle.textContent = 'Contato (ainda em fase de desenvolvimento)';
 				nameInputField.placeholder = "Nome*";
 				subjectInputField.placeholder = "Assunto*";
 				messageInputField.placeholder = "Mensagem*";
-				daviSubmitButton.textContent = "Enviar";
+				submitButton.textContent = "Enviar";
 				document.querySelector(".contact-add-head > p").textContent = "Desenvolvedor Blockchain";
 				daviCopyRight.textContent = "© Todos os Direitos Reservados Davi Arruda Navarro Albuquerque. Projetado e desenvolvido por themesine";
 			}
@@ -494,6 +496,48 @@
 
 		// Set initial language
 		changeLanguage('en');
+
+		document.addEventListener('DOMContentLoaded', function () {
+			const form = document.getElementById('contactForm');
+			const submitButton = document.getElementById('submitButton');
+
+			form.addEventListener('submit', function (e) {
+				e.preventDefault();
+
+				const formData = {
+					name: document.getElementById('name').value,
+					email: document.getElementById('email').value,
+					subject: document.getElementById('subject').value,
+					message: document.getElementById('message').value
+				};
+
+				submitButton.disabled = true;
+				submitButton.textContent = 'Sending...';
+
+				fetch('http://localhost:3000/contact', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(formData),
+				})
+					.then(response => response.json())
+					.then(data => {
+						alert(data.message);
+						form.reset();
+					})
+					.catch((error) => {
+						console.error('Error:', error);
+						alert('An error occurred. Please try again later.');
+					})
+					.finally(() => {
+						submitButton.disabled = false;
+						submitButton.textContent = 'Submit';
+					});
+			});
+		});
+
 	</script>
 </body>
+
 </html>

@@ -1,15 +1,17 @@
 import express, { Request, Response, NextFunction, text } from "express";
 import cors from "cors";
 import morgan from "morgan";
-import nodemailer from "nodemailer";
+
 import { body, validationResult } from "express-validator";
 import dotenv from "dotenv";
+import emailSender from "./mail/sendMailer";
 dotenv.config();
 
 const app = express();
 const PORT: number = parseInt(`${process.env.PORT}`);
-const FROM_EMAIL_ADDRESS:string = `${process.env.FROM_EMAIL_ADDRESS}`;
-const EMAIL_PASSWORD:string = `${process.env.EMAIL_PASSWORD}`;
+
+
+const TO_ADDRESS:string = `${process.env.TO_ADDRESS}`;
 
 app.use(cors());
 app.use(morgan("tiny"));
@@ -33,32 +35,18 @@ app.post("/contact", [
     }
 
     const {name, email, subject, message} = req.body;
-    // Create a nodemailer transporter (configure with your email service)
-
-    const transporter = nodemailer.createTransport({
-        service:"gmail",
-        auth: {
-            user:FROM_EMAIL_ADDRESS,
-            pass:EMAIL_PASSWORD 
-        }
-    });
-
-    const mailOptions = {
-        from:FROM_EMAIL_ADDRESS,
-        to:"davialbuquerque998@gmail.com",
-        subject:subject,
-        text:`Name:${name}\nEmail:${email}\nSubject:${subject}\nMessage:${message}`
-    };
 
     try {
-        await transporter.sendMail(mailOptions);
-        res.status(200).json({message:"Email sent successfully"});
+        await emailSender("davialbuquerque998@gmail.com", subject, message);
+        console.log("It works, ieeei");
+        res.status(200).send("It worked");
         return;
     } catch (error) {
-        console.error('Error sending email:', error);
-        res.status(500).json({ message: 'Error sending email' });
-        return;
+        console.log("It did not work, paia demais");
+        res.status(200).send("It should work, but it did not");
     }
+    
+    
 });
 
 app.listen(PORT, () => {
