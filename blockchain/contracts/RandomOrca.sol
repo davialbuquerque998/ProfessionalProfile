@@ -18,7 +18,7 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://ANYTHING/";
+        return "https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/";
     }
 
     function safeMint()
@@ -26,8 +26,8 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _safeMint(msg.sender, _nextTokenId);
-        uint256 imageId = ((_nextTokenId - 1) % MAX_IMAGES) + 1; // Cyclic image reference
-        _setTokenURI(_nextTokenId, Strings.toString(imageId)); // Set the token URI to reference the image
+        uint256 imageId = ((_nextTokenId - 1) % MAX_IMAGES) + 1;
+        _setTokenURI(_nextTokenId, Strings.toString(imageId));
         _nextTokenId += 1;
     }
 
