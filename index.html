@@ -395,6 +395,8 @@
 				education: 'education',
 				skills: 'skills',
 				contact: 'contact',
+				presentation: `I am a Blockchain Developer with experience in HTML, CSS,JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.`,
+				story: `My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.`,
 				'job-title': 'Blockchain Developer',
 				'download-resume': 'download resume',
 				'about-me': 'About me',
@@ -423,6 +425,8 @@
 				education: 'Formação',
 				skills: 'habilidades',
 				contact: 'contato',
+				presentation:`Sou um desenvolvedor blockchain com experiência em HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js e Hardhat.`,
+				story:`A pandemia despertou meu interesse em programação, provocando uma mudança completa da minha formação em Engenharia Mecânica para um foco em Desenvolvimento de Blockchain e Web3. Na 2ndMarket, mergulhei no desenvolvimento de contratos inteligentes com Solidity para blockchains compatíveis com EVM e ganhei experiência na construção de aplicativos descentralizados (DApps) usando ferramentas como TypeScript, Next.js e Ethers.js.`,
 				'job-title': 'Desenvolvedor Blockchain',
 				'download-resume': 'baixar currículo',
 				'about-me': 'Sobre mim',
@@ -488,10 +492,15 @@
 
 			// Update other elements
 			elements.presentation.textContent = translations[currentLanguage]['presentation'];
+			console.log(translations[currentLanguage]['presentation'])
 			elements.story.textContent = translations[currentLanguage]['story'];
 			elements.aboutMe.textContent = translations[currentLanguage]['about-me'];
+
 			elements.educationTitle.textContent = translations[currentLanguage]['education-title'];
+
 			elements.graduationDate.textContent = translations[currentLanguage]['graduated-in'];
+
+
 			elements.graduationField.textContent = translations[currentLanguage]['degree'];
 			elements.graduationUniversity.textContent = translations[currentLanguage]['university'];
 			elements.location.textContent = translations[currentLanguage]['location'];
