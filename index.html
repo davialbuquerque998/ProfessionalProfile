@@ -310,8 +310,8 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<div class="single-contact-btn">
-												<button type="submit" class="contact-btn"
-													id="submitButton" style="width: 100%;">Submit</button>
+												<button type="submit" class="contact-btn" id="submitButton"
+													style="width: 100%;">Submit</button>
 											</div>
 										</div>
 									</div>
@@ -381,9 +381,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
 	<script src="assets/js/custom.js"></script>
 	<script>
-		// Define the translations object
+		// Language configurations
+		const LANGUAGES = {
+			EN: 'en',
+			PT_BR: 'pt-br'
+		};
+
 		const translations = {
-			en: {
+			[LANGUAGES.EN]: {
 				welcome: 'Welcome',
 				home: 'home',
 				about: 'about',
@@ -392,8 +397,26 @@
 				contact: 'contact',
 				'job-title': 'Blockchain Developer',
 				'download-resume': 'download resume',
+				'about-me': 'About me',
+				'education-title': 'Education',
+				'graduated-in': 'Graduated in 2021',
+				'degree': 'Bachelor\'s Degree in Mechanical Engineering',
+				'university': 'Federal University of Ceará (UFC)',
+				'location': 'Ceará, Brazil',
+				'graduation-skills': 'Completed my degree in Mechanical Engineering, providing a strong foundation in problem-solving and analytical thinking.',
+				'skills-title': 'Skills',
+				'contact-me': 'contact me (still working on the backend)',
+				'name-placeholder': 'Name*',
+				'subject-placeholder': 'Subject*',
+				'message-placeholder': 'Message*',
+				'submit-button': 'Submit',
+				'job-description': 'Blockchain Developer',
+				'copyright': '© Copyright Davi Arruda Navarro Albuquerque. Designed and developed by themesine',
+				'form-success': 'Thank you! Your message has been sent successfully.',
+				'form-error': 'Oops! Something went wrong. Please try again later.',
+				'sending': 'Sending...'
 			},
-			'pt-br': {
+			[LANGUAGES.PT_BR]: {
 				welcome: 'Bem-vindo',
 				home: 'início',
 				about: 'sobre',
@@ -402,195 +425,173 @@
 				contact: 'contato',
 				'job-title': 'Desenvolvedor Blockchain',
 				'download-resume': 'baixar currículo',
-			},
+				'about-me': 'Sobre mim',
+				'education-title': 'Formação',
+				'graduated-in': 'Formado em 2021',
+				'degree': 'Bacharelado em Engenharia Mecânica',
+				'university': 'Universidade Federal do Ceará (UFC)',
+				'location': 'Ceará, Brasil',
+				'graduation-skills': 'Concluí minha graduação em Engenharia Mecânica, fornecendo uma base sólida em resolução de problemas e pensamento analítico.',
+				'skills-title': 'Habilidades',
+				'contact-me': 'Contato (ainda em fase de desenvolvimento)',
+				'name-placeholder': 'Nome*',
+				'subject-placeholder': 'Assunto*',
+				'message-placeholder': 'Mensagem*',
+				'submit-button': 'Enviar',
+				'job-description': 'Desenvolvedor Blockchain',
+				'copyright': '© Todos os Direitos Reservados Davi Arruda Navarro Albuquerque. Projetado e desenvolvido por themesine',
+				'form-success': 'Muito obrigado! Sua mensagem foi enviada com sucesso!',
+				'form-error': 'Oops! Algo deu errado, por favor, tente outra vez!',
+				'sending': 'Enviando...'
+			}
 		};
 
-		let isEnglish = true;
+		let currentLanguage = LANGUAGES.EN;
+
+		// DOM Elements
+		const elements = {
+			resumeLink: document.getElementById('davi-resume-download-link'),
+			usFlag: document.getElementById('us-flag-element'),
+			brFlag: document.getElementById('br-flag-element'),
+			presentation: document.getElementById('davi-presentation'),
+			story: document.getElementById('davi-story'),
+			aboutMe: document.getElementById('davi-about-me'),
+			educationTitle: document.getElementById('davi-education-title'),
+			graduationDate: document.getElementById('davi-graduation-date'),
+			graduationField: document.getElementById('davi-graduation-field'),
+			graduationUniversity: document.getElementById('davi-graduation-university'),
+			location: document.getElementById('davi-location'),
+			graduationSkills: document.getElementById('davi-graduation-skills'),
+			skillsTitle: document.getElementById('davi-skills-title'),
+			contactMeTitle: document.getElementById('davi-contact-me-title'),
+			nameInput: document.getElementById('name'),
+			subjectInput: document.getElementById('subject'),
+			messageInput: document.getElementById('message'),
+			submitButton: document.getElementById('submitButton'),
+			copyright: document.getElementById('davi-copyright'),
+			jobDescription: document.querySelector(".contact-add-head > p")
+		};
 
 		function changeLanguage(lang) {
+			currentLanguage = lang;
 			document.documentElement.lang = lang;
-			updateTranslations(lang);
-			updateResumeLink(lang);
-			changeLanguageParagraph(lang);
-			isEnglish = !isEnglish;
+			updateTranslations();
+			updateResumeLink();
+			updateFlagVisibility();
 		}
 
-		function updateTranslations(lang) {
+		function updateTranslations() {
 			document.querySelectorAll('[data-translate]').forEach((element) => {
 				const key = element.getAttribute('data-translate');
-				element.textContent = translations[lang][key] || element.textContent;
+				element.textContent = translations[currentLanguage][key] || element.textContent;
 			});
+
+			// Update other elements
+			elements.presentation.textContent = translations[currentLanguage]['presentation'];
+			elements.story.textContent = translations[currentLanguage]['story'];
+			elements.aboutMe.textContent = translations[currentLanguage]['about-me'];
+			elements.educationTitle.textContent = translations[currentLanguage]['education-title'];
+			elements.graduationDate.textContent = translations[currentLanguage]['graduated-in'];
+			elements.graduationField.textContent = translations[currentLanguage]['degree'];
+			elements.graduationUniversity.textContent = translations[currentLanguage]['university'];
+			elements.location.textContent = translations[currentLanguage]['location'];
+			elements.graduationSkills.textContent = translations[currentLanguage]['graduation-skills'];
+			elements.skillsTitle.textContent = translations[currentLanguage]['skills-title'];
+			elements.contactMeTitle.textContent = translations[currentLanguage]['contact-me'];
+			elements.nameInput.placeholder = translations[currentLanguage]['name-placeholder'];
+			elements.subjectInput.placeholder = translations[currentLanguage]['subject-placeholder'];
+			elements.messageInput.placeholder = translations[currentLanguage]['message-placeholder'];
+			elements.submitButton.textContent = translations[currentLanguage]['submit-button'];
+			elements.jobDescription.textContent = translations[currentLanguage]['job-description'];
+			elements.copyright.textContent = translations[currentLanguage]['copyright'];
 		}
 
-		function updateResumeLink(lang) {
-			const resumeLink = document.getElementById('davi-resume-download-link');
-			if (isEnglish) {
-				resumeLink.href = 'assets/download/davi_resume.pdf';
-				document.getElementById('us-flag-element').style.display = 'none';
-				document.getElementById('br-flag-element').style.display = 'block';
-			} else {
-				resumeLink.href = 'assets/download/davi_cv.pdf';
-				document.getElementById('us-flag-element').style.display = 'block';
-				document.getElementById('br-flag-element').style.display = 'none';
-			}
+		function updateResumeLink() {
+			elements.resumeLink.href = currentLanguage === LANGUAGES.EN ? 'assets/download/davi_resume.pdf' : 'assets/download/davi_cv.pdf';
 		}
 
-		function changeLanguageParagraph(lang) {
-			const daviPresentationElement = document.getElementById('davi-presentation');
-			const daviStoryElement = document.getElementById('davi-story');
-			const daviEducationTitle = document.getElementById('davi-education-title');
-			const daviGraduationDate = document.getElementById('davi-graduation-date');
-			const daviGraduationField = document.getElementById('davi-graduation-field');
-			const daviGraduationUniversity = document.getElementById('davi-graduation-university');
-			const daviAboutMe = document.getElementById('davi-about-me');
-			const daviLocation = document.getElementById('davi-location');
-			const daviGraduationSkills = document.getElementById('davi-graduation-skills');
-			const daviSkillsTitle = document.getElementById('davi-skills-title');
-			const daviContactMeTitle = document.getElementById('davi-contact-me-title');
-			const nameInputField = document.getElementById('name');
-			const subjectInputField = document.getElementById('subject');
-			const messageInputField = document.getElementById('message');
-			const submitButton = document.getElementById('submitButton');
-			const daviCopyRight = document.getElementById('davi-copyright');
-
-			if (isEnglish) {
-				daviPresentationElement.textContent = 'I am a Blockchain Developer with experience in HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js, and Hardhat.';
-				daviStoryElement.textContent = 'My passion for coding, sparked during the pandemic, led me to pivot my career from Mechanical Engineering into Blockchain Development and Web3. At 2ndMarket, I gained hands-on experience writing smart contracts in Solidity for EVM-compatible blockchains and building decentralized applications (DApps) with TypeScript, Next.js, and Ethers.js.';
-				daviEducationTitle.textContent = 'Education';
-				daviGraduationDate.textContent = 'Graduated in 2021';
-				daviGraduationField.textContent = 'Bachelor\'s Degree in Mechanical Engineering';
-				daviGraduationUniversity.textContent = 'Federal University of Ceará (UFC)';
-				daviAboutMe.textContent = 'About me';
-				daviLocation.textContent = 'Ceará, Brazil';
-				daviGraduationSkills.textContent = `Completed my degree in Mechanical Engineering, providing a strong foundation in problem-solving and analytical thinking.`;
-				daviSkillsTitle.textContent = `Skills`;
-				daviContactMeTitle.textContent = 'contact me (still working on the backend)';
-				nameInputField.placeholder = "Name*";
-				subjectInputField.placeholder = "Subject*";
-				messageInputField.placeholder = "Message*";
-				submitButton.textContent = "Submit";
-				document.querySelector(".contact-add-head > p").textContent = "Blockchain Developer";
-				daviCopyRight.textContent = "© Copyright Davi Arruda Navarro Albuquerque. Designed and developed by themesine";
-
-			} else {
-				daviPresentationElement.textContent = 'Sou um desenvolvedor blockchain com experiência em HTML, CSS, JavaScript, Node.js, Express.js, TypeScript, React, Next.js, Solidity, Ethers.js e Hardhat.';
-				daviStoryElement.textContent = 'Minha paixão por programação, despertada durante a pandemia, me levou a mudar minha carreira de Engenharia Mecânica para Desenvolvimento Blockchain e Web3. Na 2ndMarket, adquiri experiência prática escrevendo contratos inteligentes em Solidity para blockchains compatíveis com EVM e construindo aplicações descentralizadas (DApps) com TypeScript, Next.js e Ethers.js.';
-				daviEducationTitle.textContent = 'Formação';
-				daviGraduationDate.textContent = 'Formado em 2021';
-				daviGraduationField.textContent = 'Bacharelado em Engenharia Mecânica';
-				daviGraduationUniversity.textContent = 'Universidade Federal do Ceará (UFC)';
-				daviAboutMe.textContent = 'Sobre mim';
-				daviLocation.textContent = 'Ceará, Brasil';
-				daviGraduationSkills.textContent = `Concluí minha graduação em Engenharia Mecânica, fornecendo uma base sólida em resolução de problemas e pensamento analítico.`;
-				daviSkillsTitle.textContent = `Habilidades`;
-
-				daviContactMeTitle.textContent = 'Contato (ainda em fase de desenvolvimento)';
-				nameInputField.placeholder = "Nome*";
-				subjectInputField.placeholder = "Assunto*";
-				messageInputField.placeholder = "Mensagem*";
-				submitButton.textContent = "Enviar";
-				document.querySelector(".contact-add-head > p").textContent = "Desenvolvedor Blockchain";
-				daviCopyRight.textContent = "© Todos os Direitos Reservados Davi Arruda Navarro Albuquerque. Projetado e desenvolvido por themesine";
-			}
+		function updateFlagVisibility() {
+			elements.usFlag.style.display = currentLanguage === LANGUAGES.EN ? 'none' : 'block';
+			elements.brFlag.style.display = currentLanguage === LANGUAGES.EN ? 'block' : 'none';
 		}
 
-		// Set initial language
-		changeLanguage('en');
-
+		// Form submission logic
 		document.addEventListener('DOMContentLoaded', function () {
 			const form = document.getElementById('contactForm');
 			const formStatus = document.getElementById('formStatus');
-			const submitButton = document.getElementById('submitButton');
 
 			form.addEventListener('submit', async function (event) {
 				event.preventDefault();
 
 				// Disable submit button and show loading state
-				submitButton.disabled = true;
-				submitButton.textContent = 'Sending...';
+				elements.submitButton.disabled = true;
+				elements.submitButton.textContent = translations[currentLanguage]['sending'];
 
-				// Basic form validation
-				const name = document.getElementById('name').value.trim();
-				const email = document.getElementById('email').value.trim();
-				const subject = document.getElementById('subject').value.trim();
-				const message = document.getElementById('message').value.trim();
-
-				if (!name || !email || !subject || !message) {
-					showStatus('Please fill in all fields.', 'error');
+				if (!validateForm()) {
 					resetSubmitButton();
 					return;
 				}
 
-				if (!isValidEmail(email)) {
-					showStatus('Please enter a valid email address.', 'error');
-					resetSubmitButton();
-					return;
-				}
-
-				const formData = { name, email, subject, message };
+				const formData = {
+					name: elements.nameInput.value.trim(),
+					email: document.getElementById('email').value.trim(),
+					subject: elements.subjectInput.value.trim(),
+					message: elements.messageInput.value.trim()
+				};
 
 				try {
 					const response = await fetch('http://127.0.0.1:3000/contact', {
 						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(formData),
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(formData)
 					});
-					
+
 					if (response.ok) {
-						if (isEnglish) {
-							showStatus('Thank you! Your message has been sent successfully.', 'success');
-						}
-						else {
-							showStatus('Muito obrigado! Sua mensagem foi enviada com sucesso!', 'success');
-						}
+						showStatus(translations[currentLanguage]['form-success'], 'success');
 						form.reset();
 					} else {
 						throw new Error('Server responded with an error');
 					}
 				} catch (error) {
 					console.error('Error:', error);
-					if (isEnglish) {
-						showStatus('Oops! Something went wrong. Please try again later.', 'error');
-					}
-					else{
-						showStatus('Oops! Algo deu errado, por favor, tente outra vez!',  'error');
-					}
-
+					showStatus(translations[currentLanguage]['form-error'], 'error');
 				} finally {
 					resetSubmitButton();
 				}
 			});
 
+			function validateForm() {
+				const email = document.getElementById('email').value.trim();
+				if (!elements.nameInput.value.trim() || !email || !elements.subjectInput.value.trim() || !elements.messageInput.value.trim()) {
+					showStatus('Please fill in all fields.', 'error');
+					return false;
+				}
+				if (!isValidEmail(email)) {
+					showStatus('Please enter a valid email address.', 'error');
+					return false;
+				}
+				return true;
+			}
+
 			function isValidEmail(email) {
-				const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				return re.test(email);
+				return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 			}
 
 			function showStatus(message, type) {
 				formStatus.textContent = message;
 				formStatus.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
 				formStatus.style.display = 'block';
-
-				// Hide status message after 5 seconds
-				setTimeout(() => {
-					formStatus.style.display = 'none';
-				}, 5000);
+				setTimeout(() => { formStatus.style.display = 'none'; }, 5000);
 			}
 
 			function resetSubmitButton() {
-				submitButton.disabled = false;
-				if (isEnglish) {
-					submitButton.textContent = 'Submit';
-				}
-
-				else {
-					submitButton.textContent = 'Enviar';
-				}
-
+				elements.submitButton.disabled = false;
+				elements.submitButton.textContent = translations[currentLanguage]['submit-button'];
 			}
 		});
+
+		// Initialize language
+		changeLanguage(LANGUAGES.EN);
 	</script>
 </body>
 
