@@ -12,6 +12,19 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId = 1;
     uint256 private constant MAX_IMAGES = 12;
 
+    event MessagePosted(address indexed from, string author, string content, uint256 indexed tokenId, uint256 timestamp);
+    event MessageDeleted(address indexed from, uint256 indexed tokenId, uint256 timestamp);
+
+    struct Message {
+        address from;
+        string author;
+        string content;
+        uint256 tokenId;
+        uint256 timestamp;
+    }
+
+    Message[] public messages;
+
     constructor()
         ERC721("Random Orca", "ORC")
         Ownable(msg.sender)
@@ -21,15 +34,46 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         return "https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/";
     }
 
-    function safeMint()
+    function safeMint(string calldata author, string calldata content)
         public
-        onlyOwner
     {
+        require(bytes(content).length > 0 , "Empty messages are not allowed");
+
+        uint256 timestamp = block.timestamp;
+
+        messages.push(Message({
+            from:msg.sender,
+            author:author,
+            content:content,
+            tokenId:_nextTokenId,
+            timestamp:timestamp
+        }));
+
+        emit MessagePosted(msg.sender, author, content, _nextTokenId, timestamp);
+
         _safeMint(msg.sender, _nextTokenId);
         uint256 imageId = ((_nextTokenId - 1) % MAX_IMAGES) + 1;
         _setTokenURI(_nextTokenId, Strings.toString(imageId));
         _nextTokenId += 1;
     }
+
+    function getMessages() external view returns (Message[] memory) {
+        return messages;
+    }
+
+    function burn(uint256 tokenId) public onlyOwner {
+        uint256 timestamp = block.timestamp;
+        for (uint256 i = 0; i < messages.length; i++) {
+            if(tokenId == messages[i].tokenId){
+                emit MessageDeleted(messages[i].from, messages[i].tokenId, timestamp);
+                messages[i] = messages[messages.length - 1];
+                messages.pop();
+            }
+        }
+        _burn(tokenId);
+    }
+
+    
 
     // The following functions are overrides required by Solidity.
 
