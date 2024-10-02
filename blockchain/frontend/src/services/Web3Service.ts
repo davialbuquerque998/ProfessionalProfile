@@ -45,3 +45,22 @@ export async function safeMint(author:string, content:string) : Promise<string |
     return tx.hash;
 }
 
+export const getMessages = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(RANDOM_ORCA_ADDRESS, RANDOM_ORCA_ABI, provider);
+  
+    try {
+      const messages = await contract.getMessages();
+      return messages.map((msg: any) => ({
+        from: msg.from,
+        author: msg.author,
+        content: msg.content,
+        tokenId: Number(msg.tokenId),
+        timestamp: Number(msg.timestamp)
+      }));
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      throw error;
+    }
+  };

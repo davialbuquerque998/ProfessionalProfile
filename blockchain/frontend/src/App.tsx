@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { connectWallet, safeMint, isConnected } from "./services/Web3Service";
+import { connectWallet, safeMint, isConnected, getMessages } from "./services/Web3Service";
 import SetupTutorial from './services/setupTutorial';
 import Footer from './services/Footer';
+
+interface Message {
+  from: string;
+  author: string;
+  content: string;
+  tokenId: number;
+  timestamp: number;
+}
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [account, setAccount] = useState<string | null>(null);
   const [author, setAuthor] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     checkConnection();
+    fetchMessages();
 
     // Add event listener for account changes
     if (window.ethereum) {
@@ -34,6 +44,15 @@ const App: React.FC = () => {
       }
     } catch (error) {
       console.error("Failed to check connection:", error);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const fetchedMessages = await getMessages();
+      setMessages(fetchedMessages);
+    } catch (error) {
+      console.error("Failed to fetch messages:", error);
     }
   };
 
@@ -71,6 +90,7 @@ const App: React.FC = () => {
       alert("NFT minted successfully!");
       setAuthor('');
       setContent('');
+      fetchMessages();
     } catch (error) {
       console.error("Failed to mint NFT:", error);
       alert("Failed to mint NFT. Please try again.");
@@ -101,6 +121,21 @@ const App: React.FC = () => {
               Mint NFT
             </button>
           </div>
+          <div>
+          <h2>Messages</h2>
+          <div style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
+            {messages.slice().reverse().map((message, index) => (
+              <div key={index} style={{ marginBottom: '10px' }}>
+                <p><strong>Address:</strong> {message.from}</p>
+                <p><strong>Author:</strong> {message.author}</p>
+                <p><strong>Content:</strong> {message.content}</p>
+                <p><strong>Token ID:</strong> {message.tokenId.toString()}</p>
+                <p><strong>Timestamp:</strong> {new Date(message.timestamp * 1000).toLocaleString()}</p>
+                <hr />
+              </div>
+            ))}
+          </div>
+        </div>
         </div>
       ) : (
         <>
@@ -111,6 +146,7 @@ const App: React.FC = () => {
         </>
       )}
     </div>
+    
     <Footer/>
     </>
     
