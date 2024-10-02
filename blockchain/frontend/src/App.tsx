@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connectWallet, safeMint, isConnected } from "./services/Web3Service";
+import SetupTutorial from './services/setupTutorial';
+import Footer from './services/Footer';
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -76,6 +78,7 @@ const App: React.FC = () => {
   };
 
   return (
+    <>
     <div>
       <h1>Random Orca NFT Minter</h1>
       {isConnected ? (
@@ -100,11 +103,17 @@ const App: React.FC = () => {
           </div>
         </div>
       ) : (
-        <button onClick={handleConnect}>
-          Connect Wallet
-        </button>
+        <>
+          <SetupTutorial/>
+          <button onClick={handleConnect}>
+            Connect Wallet
+          </button>
+        </>
       )}
     </div>
+    <Footer/>
+    </>
+    
   );
 };
 
