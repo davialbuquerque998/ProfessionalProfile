@@ -25,7 +25,8 @@ const config: HardhatUserConfig = {
       accounts:{
         mnemonic:MNEMONIC
       },
-      url:HOLESKY_RPC_URL
+      url:HOLESKY_RPC_URL,
+      chainId: 17000
     }
   },
   etherscan:{
