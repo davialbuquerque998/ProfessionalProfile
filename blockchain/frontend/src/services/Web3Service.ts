@@ -1,10 +1,10 @@
-import {ethers} from "ethers";
+import {Contract, ethers} from "ethers";
 import RANDOM_ORCA_ABI from "./abis/abi.json";
 
 const RANDOM_ORCA_ADDRESS:string = `${process.env.REACT_APP_CONTRACT_ADDRESS}`;
 const CHAIN_ID:number = parseInt(`${process.env.REACT_APP_CHAIN_ID}`);
 
-export async function connectWallet() {
+export async function connectWallet(): Promise<string> {
     if(!window.ethereum){
         throw new Error("Please, install your wallet in your browser");
     }
@@ -21,5 +21,27 @@ export async function connectWallet() {
     }]);
 
     return accounts[0];
+}
+
+export async function isConnected():Promise<boolean> {
+    const accountZero = await connectWallet();
+    return accountZero.length > 0;
+}
+
+export async function safeMint(author:string, content:string) : Promise<string | null>{
+    if(!window.ethereum){
+        throw new Error("Please, install your wallet in your browser");
+    }
+    const provider = new ethers.BrowserProvider(window.ethereum);
+
+    const contract = new ethers.Contract(RANDOM_ORCA_ADDRESS, RANDOM_ORCA_ABI, provider);
+
+    const signer = await provider.getSigner();
+
+    const instance = contract.connect(signer) as Contract;
+
+    const tx = await instance.safeMint(author, content);
+
+    return tx.hash;
 }
 

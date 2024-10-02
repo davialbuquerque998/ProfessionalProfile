@@ -38,7 +38,7 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         public
     {
         require(bytes(content).length > 0 , "Empty messages are not allowed");
-
+        require(bytes(author).length > 0, "Empty names are not allowed");
         uint256 timestamp = block.timestamp;
 
         messages.push(Message({

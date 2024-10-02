@@ -69,6 +69,15 @@ describe("Random Orca Tests", function () {
     
   });
 
+  it("should not safe mint NFTs (empty names)", async () => {
+    const {signers, RandomOrcaInstance, RandomOrcaContractAddress} = await loadFixture(deployFixture);
+
+    const instanceOne = RandomOrcaInstance.connect(signers[1]);
+
+    await expect(instanceOne.safeMint("", "any message")).to.be.revertedWith("Empty names are not allowed");
+    
+  });
+
   it("should not safe mint NFTs (empty messages)", async () => {
     const {signers, RandomOrcaInstance, RandomOrcaContractAddress} = await loadFixture(deployFixture);
 
