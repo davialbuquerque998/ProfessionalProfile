@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
 import SetupTutorial from "./services/setupTutorial";
-import Header from "./services/Header"; // Add this import
+import Header from "./services/Header";
 import Footer from "./services/Footer";
 import {
   ThemeProvider,
@@ -11,7 +11,6 @@ import {
   Typography,
   Box,
   TextField,
-  Button,
   Paper,
   List,
   ListItem,
@@ -93,23 +92,45 @@ const App: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (isConnected) {
-      fetchMessages();
-    }
+    const checkConnection = async () => {
+      if (window.ethereum) {
+        try {
+          // Check if we're already connected
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          if (accounts.length > 0) {
+            setIsConnected(true);
+            setAccount(accounts[0]);
+            localStorage.setItem('walletConnected', 'true');
+            fetchMessages();
+          } else {
+            // Check localStorage
+            const wasConnected = localStorage.getItem('walletConnected');
+            if (wasConnected === 'true') {
+              // Try to reconnect
+              await handleConnect();
+            }
+          }
+        } catch (error) {
+          console.error("Failed to check wallet connection:", error);
+        }
+      }
+    };
 
+    checkConnection();
+
+    // Set up event listeners
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("disconnect", handleDisconnect);
     }
 
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
+        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        window.ethereum.removeListener("disconnect", handleDisconnect);
       }
     };
-  }, [isConnected]);
+  }, []);
 
   const fetchMessages = async () => {
     try {
@@ -125,14 +146,21 @@ const App: React.FC = () => {
 
   const handleAccountsChanged = (accounts: string[]) => {
     if (accounts.length === 0) {
-      setIsConnected(false);
-      setAccount(null);
-      enqueueSnackbar("Wallet disconnected", { variant: "info" });
+      handleDisconnect();
     } else {
       setIsConnected(true);
       setAccount(accounts[0]);
-      enqueueSnackbar("Wallet connected", { variant: "success" });
+      localStorage.setItem('walletConnected', 'true');
+      enqueueSnackbar("Wallet account changed", { variant: "info" });
+      fetchMessages();
     }
+  };
+
+  const handleDisconnect = () => {
+    setIsConnected(false);
+    setAccount(null);
+    localStorage.removeItem('walletConnected');
+    enqueueSnackbar("Wallet disconnected", { variant: "info" });
   };
 
   const handleConnect = async () => {
@@ -142,15 +170,18 @@ const App: React.FC = () => {
       if (connectedAccount) {
         setIsConnected(true);
         setAccount(connectedAccount);
+        localStorage.setItem('walletConnected', 'true');
         enqueueSnackbar("Wallet connected successfully!", {
           variant: "success",
         });
+        fetchMessages();
       }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
       enqueueSnackbar("Failed to connect wallet. Please try again.", {
         variant: "error",
       });
+      localStorage.removeItem('walletConnected');
     } finally {
       setIsLoading(false);
     }
@@ -204,7 +235,7 @@ const App: React.FC = () => {
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          position: "relative", // Ensures content is above the background
+          position: "relative",
           zIndex: 1,
         }}
       >
@@ -224,13 +255,13 @@ const App: React.FC = () => {
           {isConnected ? (
             <Box sx={{ mt: 4 }}>
               <Paper
-                elevation={0} // Remove any shadow to make it completely flat
-                sx={{ p: 3, mb: 4, backgroundColor: "transparent" }} // Make the background transparent
+                elevation={0}
+                sx={{ p: 3, mb: 4, backgroundColor: "transparent" }}
               >
                 <Typography
                   variant="body1"
                   paragraph
-                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Set bold font weight and new font
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
                 >
                   This Dapp allows you to share your thoughts, compliments, or
                   suggestions with me as I continue to develop my blockchain
@@ -241,7 +272,7 @@ const App: React.FC = () => {
                 <Typography
                   variant="body1"
                   paragraph
-                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Apply the same style to all paragraphs
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
                 >
                   Whether you'd like to give feedback on my work or just say
                   hello, your message matters. Once submitted, your NFT will be
@@ -249,10 +280,10 @@ const App: React.FC = () => {
                 </Typography>
                 <Typography
                   variant="body1"
-                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Apply the same style here
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
                 >
                   Connect your wallet, send me a message, and claim your very
-                  own Orca NFT—it’s easy, fun, and completely free on the
+                  own Orca NFT—it's easy, fun, and completely free on the
                   testnet!
                 </Typography>
               </Paper>
@@ -317,8 +348,6 @@ const App: React.FC = () => {
                   elevation={0}
                   sx={{ p: 2, backgroundColor: "transparent" }}
                 >
-                  {" "}
-                  {/* Transparent Paper */}
                   <List>
                     {messages
                       .slice()
@@ -327,18 +356,17 @@ const App: React.FC = () => {
                         <React.Fragment key={index}>
                           {index > 0 && (
                             <Divider sx={{ backgroundColor: "transparent" }} />
-                          )}{" "}
-                          {/* Transparent Divider */}
+                          )}
                           <ListItem
                             alignItems="flex-start"
                             sx={{
                               backgroundColor: "transparent",
                               transition:
-                                "background-color 0.3s, transform 0.3s", // Smooth transition for background color and transform
+                                "background-color 0.3s, transform 0.3s",
                               "&:hover": {
-                                backgroundColor: "rgba(144, 202, 249, 0.2)", // Light blue background on hover
-                                transform: "scale(1.02)", // Slightly scale the item on hover
-                                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)", // Add a subtle shadow on hover
+                                backgroundColor: "rgba(144, 202, 249, 0.2)",
+                                transform: "scale(1.02)",
+                                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
                               },
                             }}
                           >
