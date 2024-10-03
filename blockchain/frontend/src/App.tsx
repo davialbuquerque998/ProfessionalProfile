@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
-import SetupTutorial from "./services/setupTutorial";
-import Header from "./services/Header";
-import Footer from "./services/Footer";
+import {
+  connectWallet,
+  safeMint,
+  getMessages,
+  RANDOM_ORCA_ADDRESS,
+} from "./services/Web3Service";
+import SetupTutorial from "./components/setupTutorial";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import {
   ThemeProvider,
   createTheme,
@@ -22,6 +27,7 @@ import {
   Alert,
   AlertTitle,
   useScrollTrigger,
+  Link,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { SnackbarProvider, useSnackbar } from "notistack";
@@ -96,16 +102,18 @@ const App: React.FC = () => {
       if (window.ethereum) {
         try {
           // Check if we're already connected
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
           if (accounts.length > 0) {
             setIsConnected(true);
             setAccount(accounts[0]);
-            localStorage.setItem('walletConnected', 'true');
+            localStorage.setItem("walletConnected", "true");
             fetchMessages();
           } else {
             // Check localStorage
-            const wasConnected = localStorage.getItem('walletConnected');
-            if (wasConnected === 'true') {
+            const wasConnected = localStorage.getItem("walletConnected");
+            if (wasConnected === "true") {
               // Try to reconnect
               await handleConnect();
             }
@@ -126,7 +134,10 @@ const App: React.FC = () => {
 
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
         window.ethereum.removeListener("disconnect", handleDisconnect);
       }
     };
@@ -150,7 +161,7 @@ const App: React.FC = () => {
     } else {
       setIsConnected(true);
       setAccount(accounts[0]);
-      localStorage.setItem('walletConnected', 'true');
+      localStorage.setItem("walletConnected", "true");
       enqueueSnackbar("Wallet account changed", { variant: "info" });
       fetchMessages();
     }
@@ -159,7 +170,7 @@ const App: React.FC = () => {
   const handleDisconnect = () => {
     setIsConnected(false);
     setAccount(null);
-    localStorage.removeItem('walletConnected');
+    localStorage.removeItem("walletConnected");
     enqueueSnackbar("Wallet disconnected", { variant: "info" });
   };
 
@@ -170,7 +181,7 @@ const App: React.FC = () => {
       if (connectedAccount) {
         setIsConnected(true);
         setAccount(connectedAccount);
-        localStorage.setItem('walletConnected', 'true');
+        localStorage.setItem("walletConnected", "true");
         enqueueSnackbar("Wallet connected successfully!", {
           variant: "success",
         });
@@ -181,7 +192,7 @@ const App: React.FC = () => {
       enqueueSnackbar("Failed to connect wallet. Please try again.", {
         variant: "error",
       });
-      localStorage.removeItem('walletConnected');
+      localStorage.removeItem("walletConnected");
     } finally {
       setIsLoading(false);
     }
@@ -247,7 +258,11 @@ const App: React.FC = () => {
               component="h1"
               gutterBottom
               align="center"
-              sx={{ color: "primary.light", fontFamily:"Lato, sans-serif", fontWeight:"bold" }}
+              sx={{
+                color: "primary.light",
+                fontFamily: "Lato, sans-serif",
+                fontWeight: "bold",
+              }}
             >
               Welcome to the Random Orca NFT Minter!
             </Typography>
@@ -266,8 +281,8 @@ const App: React.FC = () => {
                   This Dapp allows you to share your thoughts, compliments, or
                   suggestions with me as I continue to develop my blockchain
                   projects. Simply write a message, and as a token of
-                  appreciation, you will receive a unique and playful Orca NFT
-                  directly to your wallet!
+                  appreciation, you will receive an Orca NFT directly to your
+                  wallet!
                 </Typography>
                 <Typography
                   variant="body1"
@@ -294,6 +309,33 @@ const App: React.FC = () => {
                   {`${account?.slice(0, 12)}...`}
                 </Box>
               </Typography>
+              <Link
+                color="primary"
+                href={`https://holesky.etherscan.io/address/${RANDOM_ORCA_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  marginBottom:"10px",
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  transition: "background-color 0.3s, color 0.3s",
+                  backgroundColor: "#2C3F51", // light background for contrast
+                  "&:hover": {
+                    textDecoration: "underline",
+                    backgroundColor: "#648DAE", // Material UI primary color
+                    color: "#fff",
+                  },
+                  "&:active": {
+                    backgroundColor: "#2C3F51", // darker shade when clicked
+                  },
+                }}
+              >
+                Check On Etherscan
+              </Link>
               <Box
                 sx={{
                   display: "flex",
