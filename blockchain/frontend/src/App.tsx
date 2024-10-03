@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
 import SetupTutorial from "./services/setupTutorial";
 import Footer from "./services/Footer";
+import { 
+  ThemeProvider, 
+  createTheme, 
+  CssBaseline, 
+  Container, 
+  Typography, 
+  Box, 
+  TextField, 
+  Button, 
+  Paper, 
+  List, 
+  ListItem, 
+  ListItemText, 
+  Divider 
+} from "@mui/material";
 
 interface Message {
   from: string;
@@ -10,6 +25,22 @@ interface Message {
   tokenId: number;
   timestamp: number;
 }
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#90caf9',
+    },
+    secondary: {
+      main: '#f48fb1',
+    },
+    background: {
+      default: '#0a1929',
+      paper: '#0d2137',
+    },
+  },
+});
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -90,89 +121,123 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
-      <div>
-        <h1>Welcome to the Random Orca NFT Minter!</h1>
-        {isConnected ? (
-          <div>
-            <p>
-              This Dapp allows you to share your thoughts, compliments, or
-              suggestions with me as I continue to develop my blockchain
-              projects. Simply write a message, and as a token of appreciation,
-              you will receive a unique and playful Orca NFT directly to your
-              wallet!
-            </p>
-            <p>
-              Whether you'd like to give feedback on my work or just say hello,
-              your message matters. Once submitted, your NFT will be minted to
-              commemorate your contribution.
-            </p>
-            <p>
-              Connect your wallet, send me a message, and claim your very own
-              Orca NFT—it’s easy, fun, and completely free on the testnet!
-            </p>
-            <p>Connected Account: {account}</p>
-            <div>
-              <input
-                type="text"
-                placeholder="Your name"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Your message"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-              <button onClick={handleMint}>Mint NFT</button>
-            </div>
-            <div>
-              <h2>Messages</h2>
-              <div
-                style={{
-                  border: "1px solid black",
-                  padding: "10px",
-                  margin: "10px 0",
-                }}
-              >
-                {messages
-                  .slice()
-                  .reverse()
-                  .map((message, index) => (
-                    <div key={index} style={{ marginBottom: "10px" }}>
-                      <p>
-                        <strong>Address:</strong> {message.from}
-                      </p>
-                      <p>
-                        <strong>Author:</strong> {message.author}
-                      </p>
-                      <p>
-                        <strong>Content:</strong> {message.content}
-                      </p>
-                      <p>
-                        <strong>Token ID:</strong> {message.tokenId.toString()}
-                      </p>
-                      <p>
-                        <strong>Timestamp:</strong>{" "}
-                        {new Date(message.timestamp * 1000).toLocaleString()}
-                      </p>
-                      <hr />
-                    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Box 
+        sx={{ 
+          minHeight: '100vh', 
+          display: 'flex', 
+          flexDirection: 'column',
+          background: 'linear-gradient(to bottom, #0a1929 0%, #0d2137 100%)'
+        }}
+      >
+        <Container component="main" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
+          <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.light' }}>
+            Welcome to the Random Orca NFT Minter!
+          </Typography>
+          {isConnected ? (
+            <Box sx={{ mt: 4 }}>
+              <Paper elevation={3} sx={{ p: 3, mb: 4, backgroundColor: 'background.paper' }}>
+                <Typography variant="body1" paragraph>
+                  This Dapp allows you to share your thoughts, compliments, or
+                  suggestions with me as I continue to develop my blockchain
+                  projects. Simply write a message, and as a token of appreciation,
+                  you will receive a unique and playful Orca NFT directly to your
+                  wallet!
+                </Typography>
+                <Typography variant="body1" paragraph>
+                  Whether you'd like to give feedback on my work or just say hello,
+                  your message matters. Once submitted, your NFT will be minted to
+                  commemorate your contribution.
+                </Typography>
+                <Typography variant="body1">
+                  Connect your wallet, send me a message, and claim your very own
+                  Orca NFT—it's easy, fun, and completely free on the testnet!
+                </Typography>
+              </Paper>
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                Connected Account: <Box component="span" sx={{ fontFamily: 'monospace' }}>{account}</Box>
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 4 }}>
+                <TextField
+                  fullWidth
+                  label="Your name"
+                  variant="outlined"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                />
+                <TextField
+                  fullWidth
+                  label="Your message"
+                  variant="outlined"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleMint}
+                  sx={{ minWidth: '120px' }}
+                >
+                  Mint NFT
+                </Button>
+              </Box>
+              <Typography variant="h4" component="h2" gutterBottom>
+                Messages
+              </Typography>
+              <Paper elevation={3} sx={{ p: 2, backgroundColor: 'background.paper' }}>
+                <List>
+                  {messages.slice().reverse().map((message, index) => (
+                    <React.Fragment key={index}>
+                      {index > 0 && <Divider />}
+                      <ListItem alignItems="flex-start">
+                        <ListItemText
+                          primary={`Author: ${message.author}`}
+                          secondary={
+                            <React.Fragment>
+                              <Typography component="span" variant="body2" color="text.primary">
+                                Content: {message.content}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                Address: {message.from}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                Token ID: {message.tokenId.toString()}
+                              </Typography>
+                              <br />
+                              <Typography component="span" variant="body2">
+                                Timestamp: {new Date(message.timestamp * 1000).toLocaleString()}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    </React.Fragment>
                   ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            <SetupTutorial />
-            <button onClick={handleConnect}>Connect Wallet</button>
-          </>
-        )}
-      </div>
-      <Footer />
-    </>
+                </List>
+              </Paper>
+            </Box>
+          ) : (
+            <Box sx={{ textAlign: 'center' }}>
+              <SetupTutorial />
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleConnect}
+                sx={{ mt: 4 }}
+              >
+                Connect Wallet
+              </Button>
+            </Box>
+          )}
+        </Container>
+        <Footer />
+      </Box>
+    </ThemeProvider>
   );
+
 };
 
 export default App;
