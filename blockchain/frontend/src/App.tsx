@@ -295,11 +295,18 @@ const App: React.FC = () => {
                 </Typography>
                 <Typography
                   variant="body1"
+                  paragraph
                   sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
                 >
                   Connect your wallet, send me a message, and claim your very
                   own Orca NFT—it's easy, fun, and completely free on the
                   testnet!
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
+                >
+                  We assure you that no orcas were harmed in the making of this project. All images were created using artificial intelligence. May these majestic creatures continue to swim freely in the oceans!
                 </Typography>
               </Paper>
 
