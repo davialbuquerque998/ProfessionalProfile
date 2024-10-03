@@ -222,27 +222,39 @@ const App: React.FC = () => {
           {isConnected ? (
             <Box sx={{ mt: 4 }}>
               <Paper
-                elevation={3}
-                sx={{ p: 3, mb: 4, backgroundColor: "rgba(13, 33, 55, 0.8)" }}
+                elevation={0} // Remove any shadow to make it completely flat
+                sx={{ p: 3, mb: 4, backgroundColor: "transparent" }} // Make the background transparent
               >
-                <Typography variant="body1" paragraph>
+                <Typography
+                  variant="body1"
+                  paragraph
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Set bold font weight and new font
+                >
                   This Dapp allows you to share your thoughts, compliments, or
                   suggestions with me as I continue to develop my blockchain
                   projects. Simply write a message, and as a token of
                   appreciation, you will receive a unique and playful Orca NFT
                   directly to your wallet!
                 </Typography>
-                <Typography variant="body1" paragraph>
+                <Typography
+                  variant="body1"
+                  paragraph
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Apply the same style to all paragraphs
+                >
                   Whether you'd like to give feedback on my work or just say
                   hello, your message matters. Once submitted, your NFT will be
                   minted to commemorate your contribution.
                 </Typography>
-                <Typography variant="body1">
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }} // Apply the same style here
+                >
                   Connect your wallet, send me a message, and claim your very
-                  own Orca NFT—it's easy, fun, and completely free on the
+                  own Orca NFT—it’s easy, fun, and completely free on the
                   testnet!
                 </Typography>
               </Paper>
+
               <Typography variant="h6" sx={{ mb: 2 }}>
                 Connected Account:{" "}
                 <Box component="span" sx={{ fontFamily: "monospace" }}>
@@ -296,68 +308,93 @@ const App: React.FC = () => {
                 </Fade>
               )}
               <Box sx={{ mt: 4 }}>
-  <Typography variant="h4" component="h2" gutterBottom>
-    Messages
-  </Typography>
-  <Paper elevation={0} sx={{ p: 2, backgroundColor: "transparent" }}> {/* Transparent Paper */}
-    <List>
-      {messages
-        .slice()
-        .reverse()
-        .map((message, index) => (
-          <React.Fragment key={index}>
-            {index > 0 && <Divider sx={{ backgroundColor: "transparent" }} />} {/* Transparent Divider */}
-            <ListItem alignItems="flex-start" sx={{ backgroundColor: "transparent" }}> {/* Transparent ListItem */}
-              <ListItemText
-                primary={
-                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                    Author: {message.author}
-                  </Typography>
-                }
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      Content: {message.content}
-                    </Typography>
-                    <br />
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      Address: {message.from}
-                    </Typography>
-                    <br />
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      Token ID: {message.tokenId.toString()}
-                    </Typography>
-                    <br />
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      sx={{ fontWeight: "bold" }}
-                    >
-                      Timestamp:{" "}
-                      {new Date(message.timestamp * 1000).toLocaleString()}
-                    </Typography>
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-          </React.Fragment>
-        ))}
-    </List>
-  </Paper>
-</Box>
+                <Typography variant="h4" component="h2" gutterBottom>
+                  Messages
+                </Typography>
+                <Paper
+                  elevation={0}
+                  sx={{ p: 2, backgroundColor: "transparent" }}
+                >
+                  {" "}
+                  {/* Transparent Paper */}
+                  <List>
+                    {messages
+                      .slice()
+                      .reverse()
+                      .map((message, index) => (
+                        <React.Fragment key={index}>
+                          {index > 0 && (
+                            <Divider sx={{ backgroundColor: "transparent" }} />
+                          )}{" "}
+                          {/* Transparent Divider */}
+                          <ListItem
+                            alignItems="flex-start"
+                            sx={{
+                              backgroundColor: "transparent",
+                              transition:
+                                "background-color 0.3s, transform 0.3s", // Smooth transition for background color and transform
+                              "&:hover": {
+                                backgroundColor: "rgba(144, 202, 249, 0.2)", // Light blue background on hover
+                                transform: "scale(1.02)", // Slightly scale the item on hover
+                                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)", // Add a subtle shadow on hover
+                              },
+                            }}
+                          >
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  variant="body1"
+                                  sx={{ fontWeight: "bold" }}
+                                >
+                                  Author: {message.author}
+                                </Typography>
+                              }
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    component="span"
+                                    variant="body2"
+                                    color="text.primary"
+                                    sx={{ fontWeight: "bold" }}
+                                  >
+                                    Content: {message.content}
+                                  </Typography>
+                                  <br />
+                                  <Typography
+                                    component="span"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
+                                  >
+                                    Address: {message.from}
+                                  </Typography>
+                                  <br />
+                                  <Typography
+                                    component="span"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
+                                  >
+                                    Token ID: {message.tokenId.toString()}
+                                  </Typography>
+                                  <br />
+                                  <Typography
+                                    component="span"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bold" }}
+                                  >
+                                    Timestamp:{" "}
+                                    {new Date(
+                                      message.timestamp * 1000
+                                    ).toLocaleString()}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </ListItem>
+                        </React.Fragment>
+                      ))}
+                  </List>
+                </Paper>
+              </Box>
             </Box>
           ) : (
             <Box sx={{ textAlign: "center" }}>
