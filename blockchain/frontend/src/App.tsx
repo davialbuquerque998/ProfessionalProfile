@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
 import SetupTutorial from "./services/setupTutorial";
+import Header from "./services/Header"; // Add this import
 import Footer from "./services/Footer";
 import {
   ThemeProvider,
@@ -207,6 +208,7 @@ const App: React.FC = () => {
           zIndex: 1,
         }}
       >
+        <Header />
         <Container component="main" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
           <Fade in={true} timeout={1000}>
             <Typography
