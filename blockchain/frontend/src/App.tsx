@@ -15,8 +15,15 @@ import {
   List, 
   ListItem, 
   ListItemText, 
-  Divider 
+  Divider,
+  Backdrop,
+  CircularProgress,
+  Fade,
+  Alert,
+  AlertTitle
 } from "@mui/material";
+import { LoadingButton } from '@mui/lab';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 interface Message {
   from: string;
@@ -48,24 +55,24 @@ const App: React.FC = () => {
   const [author, setAuthor] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertType, setAlertType] = useState<'success' | 'error'>('success');
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (isConnected) {
       fetchMessages();
     }
 
-    // Add event listener for account changes
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
 
-    // Cleanup function to remove the event listener
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener(
-          "accountsChanged",
-          handleAccountsChanged
-        );
+        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
       }
     };
   }, [isConnected]);
@@ -76,47 +83,60 @@ const App: React.FC = () => {
       setMessages(fetchedMessages);
     } catch (error) {
       console.error("Failed to fetch messages:", error);
+      enqueueSnackbar('Failed to fetch messages. Please try again.', { variant: 'error' });
     }
   };
 
   const handleAccountsChanged = (accounts: string[]) => {
     if (accounts.length === 0) {
-      // User disconnected their wallet
       setIsConnected(false);
       setAccount(null);
+      enqueueSnackbar('Wallet disconnected', { variant: 'info' });
     } else {
-      // User switched to a different account
       setIsConnected(true);
       setAccount(accounts[0]);
+      enqueueSnackbar('Wallet connected', { variant: 'success' });
     }
   };
 
   const handleConnect = async () => {
+    setIsLoading(true);
     try {
       const connectedAccount = await connectWallet();
       if (connectedAccount) {
         setIsConnected(true);
         setAccount(connectedAccount);
+        enqueueSnackbar('Wallet connected successfully!', { variant: 'success' });
       }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
+      enqueueSnackbar('Failed to connect wallet. Please try again.', { variant: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleMint = async () => {
     if (!author || !content) {
-      alert("Please enter both author and content.");
+      enqueueSnackbar('Please enter both author and content.', { variant: 'warning' });
       return;
     }
+    setIsLoading(true);
     try {
       await safeMint(author, content);
-      alert("NFT minted successfully!");
+      setAlertType('success');
+      setAlertMessage('Please be patient as the blockchain confirms the transaction.');
+      setShowAlert(true);
       setAuthor("");
       setContent("");
       fetchMessages();
     } catch (error) {
       console.error("Failed to mint NFT:", error);
-      alert("Failed to mint NFT. Please try again.");
+      setAlertType('error');
+      setAlertMessage('Failed to mint NFT. Please try again.');
+      setShowAlert(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,9 +152,11 @@ const App: React.FC = () => {
         }}
       >
         <Container component="main" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
-          <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.light' }}>
-            Welcome to the Random Orca NFT Minter!
-          </Typography>
+          <Fade in={true} timeout={1000}>
+            <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.light' }}>
+              Welcome to the Random Orca NFT Minter!
+            </Typography>
+          </Fade>
           {isConnected ? (
             <Box sx={{ mt: 4 }}>
               <Paper elevation={3} sx={{ p: 3, mb: 4, backgroundColor: 'background.paper' }}>
@@ -173,15 +195,24 @@ const App: React.FC = () => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                 />
-                <Button
+                <LoadingButton
                   variant="contained"
                   color="primary"
                   onClick={handleMint}
+                  loading={isLoading}
                   sx={{ minWidth: '120px' }}
                 >
                   Mint NFT
-                </Button>
+                </LoadingButton>
               </Box>
+              {showAlert && (
+                <Fade in={showAlert}>
+                  <Alert severity={alertType} onClose={() => setShowAlert(false)} sx={{ mb: 2 }}>
+                    <AlertTitle>{alertType === 'success' ? 'Success' : 'Error'}</AlertTitle>
+                    {alertMessage}
+                  </Alert>
+                </Fade>
+              )}
               <Typography variant="h4" component="h2" gutterBottom>
                 Messages
               </Typography>
@@ -222,22 +253,34 @@ const App: React.FC = () => {
           ) : (
             <Box sx={{ textAlign: 'center' }}>
               <SetupTutorial />
-              <Button
+              <LoadingButton
                 variant="contained"
                 color="primary"
                 onClick={handleConnect}
+                loading={isLoading}
                 sx={{ mt: 4 }}
               >
                 Connect Wallet
-              </Button>
+              </LoadingButton>
             </Box>
           )}
         </Container>
         <Footer />
       </Box>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </ThemeProvider>
   );
-
 };
 
-export default App;
+const AppWrapper: React.FC = () => (
+  <SnackbarProvider maxSnack={3}>
+    <App />
+  </SnackbarProvider>
+);
+
+export default AppWrapper;
