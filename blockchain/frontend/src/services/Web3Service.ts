@@ -48,7 +48,7 @@ export const getMessages = async () => {
     try {
       const messages = await contract.getMessages();
       return messages.map((msg: any) => ({
-        from: msg.from,
+        from: `${msg.from.slice(0, 9)}...`,
         author: msg.author,
         content: msg.content,
         tokenId: Number(msg.tokenId),

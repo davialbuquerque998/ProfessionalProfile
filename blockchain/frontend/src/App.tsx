@@ -2,28 +2,29 @@ import React, { useState, useEffect } from "react";
 import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
 import SetupTutorial from "./services/setupTutorial";
 import Footer from "./services/Footer";
-import { 
-  ThemeProvider, 
-  createTheme, 
-  CssBaseline, 
-  Container, 
-  Typography, 
-  Box, 
-  TextField, 
-  Button, 
-  Paper, 
-  List, 
-  ListItem, 
-  ListItemText, 
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
   Divider,
   Backdrop,
   CircularProgress,
   Fade,
   Alert,
-  AlertTitle
+  AlertTitle,
+  useScrollTrigger,
 } from "@mui/material";
-import { LoadingButton } from '@mui/lab';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { LoadingButton } from "@mui/lab";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
 interface Message {
   from: string;
@@ -35,19 +36,48 @@ interface Message {
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     primary: {
-      main: '#90caf9',
+      main: "#90caf9",
     },
     secondary: {
-      main: '#f48fb1',
+      main: "#f48fb1",
     },
     background: {
-      default: '#0a1929',
-      paper: '#0d2137',
+      default: "#0a1929",
+      paper: "#0d2137",
     },
   },
 });
+
+const ParallaxBackground: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
+  return (
+    <Box
+      sx={{
+        height: "100%",
+        width: "100%",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        backgroundImage: "url(/orca-background.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        transform: trigger ? `translateY(${window.scrollY * 0.5}px)` : "none",
+        transition: "transform 0.3s ease-out",
+        zIndex: -1,
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
 
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -57,8 +87,8 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [alertType, setAlertType] = useState<'success' | 'error'>('success');
-  const [alertMessage, setAlertMessage] = useState<string>('');
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -72,7 +102,10 @@ const App: React.FC = () => {
 
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
       }
     };
   }, [isConnected]);
@@ -83,7 +116,9 @@ const App: React.FC = () => {
       setMessages(fetchedMessages);
     } catch (error) {
       console.error("Failed to fetch messages:", error);
-      enqueueSnackbar('Failed to fetch messages. Please try again.', { variant: 'error' });
+      enqueueSnackbar("Failed to fetch messages. Please try again.", {
+        variant: "error",
+      });
     }
   };
 
@@ -91,11 +126,11 @@ const App: React.FC = () => {
     if (accounts.length === 0) {
       setIsConnected(false);
       setAccount(null);
-      enqueueSnackbar('Wallet disconnected', { variant: 'info' });
+      enqueueSnackbar("Wallet disconnected", { variant: "info" });
     } else {
       setIsConnected(true);
       setAccount(accounts[0]);
-      enqueueSnackbar('Wallet connected', { variant: 'success' });
+      enqueueSnackbar("Wallet connected", { variant: "success" });
     }
   };
 
@@ -106,11 +141,15 @@ const App: React.FC = () => {
       if (connectedAccount) {
         setIsConnected(true);
         setAccount(connectedAccount);
-        enqueueSnackbar('Wallet connected successfully!', { variant: 'success' });
+        enqueueSnackbar("Wallet connected successfully!", {
+          variant: "success",
+        });
       }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
-      enqueueSnackbar('Failed to connect wallet. Please try again.', { variant: 'error' });
+      enqueueSnackbar("Failed to connect wallet. Please try again.", {
+        variant: "error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -118,22 +157,26 @@ const App: React.FC = () => {
 
   const handleMint = async () => {
     if (!author || !content) {
-      enqueueSnackbar('Please enter both author and content.', { variant: 'warning' });
+      enqueueSnackbar("Please enter both author and content.", {
+        variant: "warning",
+      });
       return;
     }
     setIsLoading(true);
     try {
       await safeMint(author, content);
-      setAlertType('success');
-      setAlertMessage('Please be patient as the blockchain confirms the transaction.');
+      setAlertType("success");
+      setAlertMessage(
+        "Please be patient as the blockchain confirms the transaction."
+      );
       setShowAlert(true);
       setAuthor("");
       setContent("");
       fetchMessages();
     } catch (error) {
       console.error("Failed to mint NFT:", error);
-      setAlertType('error');
-      setAlertMessage('Failed to mint NFT. Please try again.');
+      setAlertType("error");
+      setAlertMessage("Failed to mint NFT. Please try again.");
       setShowAlert(true);
     } finally {
       setIsLoading(false);
@@ -143,44 +186,77 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Box 
-        sx={{ 
-          minHeight: '100vh', 
-          display: 'flex', 
-          flexDirection: 'column',
-          background: 'linear-gradient(to bottom, #0a1929 0%, #0d2137 100%)'
+      <ParallaxBackground>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(10, 25, 41, 0.7)", // Darkens the background image
+          }}
+        />
+      </ParallaxBackground>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative", // Ensures content is above the background
+          zIndex: 1,
         }}
       >
         <Container component="main" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
           <Fade in={true} timeout={1000}>
-            <Typography variant="h2" component="h1" gutterBottom align="center" sx={{ color: 'primary.light' }}>
+            <Typography
+              variant="h2"
+              component="h1"
+              gutterBottom
+              align="center"
+              sx={{ color: "primary.light" }}
+            >
               Welcome to the Random Orca NFT Minter!
             </Typography>
           </Fade>
           {isConnected ? (
             <Box sx={{ mt: 4 }}>
-              <Paper elevation={3} sx={{ p: 3, mb: 4, backgroundColor: 'background.paper' }}>
+              <Paper
+                elevation={3}
+                sx={{ p: 3, mb: 4, backgroundColor: "rgba(13, 33, 55, 0.8)" }}
+              >
                 <Typography variant="body1" paragraph>
                   This Dapp allows you to share your thoughts, compliments, or
                   suggestions with me as I continue to develop my blockchain
-                  projects. Simply write a message, and as a token of appreciation,
-                  you will receive a unique and playful Orca NFT directly to your
-                  wallet!
+                  projects. Simply write a message, and as a token of
+                  appreciation, you will receive a unique and playful Orca NFT
+                  directly to your wallet!
                 </Typography>
                 <Typography variant="body1" paragraph>
-                  Whether you'd like to give feedback on my work or just say hello,
-                  your message matters. Once submitted, your NFT will be minted to
-                  commemorate your contribution.
+                  Whether you'd like to give feedback on my work or just say
+                  hello, your message matters. Once submitted, your NFT will be
+                  minted to commemorate your contribution.
                 </Typography>
                 <Typography variant="body1">
-                  Connect your wallet, send me a message, and claim your very own
-                  Orca NFT—it's easy, fun, and completely free on the testnet!
+                  Connect your wallet, send me a message, and claim your very
+                  own Orca NFT—it's easy, fun, and completely free on the
+                  testnet!
                 </Typography>
               </Paper>
               <Typography variant="h6" sx={{ mb: 2 }}>
-                Connected Account: <Box component="span" sx={{ fontFamily: 'monospace' }}>{account}</Box>
+                Connected Account:{" "}
+                <Box component="span" sx={{ fontFamily: "monospace" }}>
+                  {`${account?.slice(0, 12)}...`}
+                </Box>
               </Typography>
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mb: 4 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: 2,
+                  mb: 4,
+                }}
+              >
                 <TextField
                   fullWidth
                   label="Your name"
@@ -200,59 +276,97 @@ const App: React.FC = () => {
                   color="primary"
                   onClick={handleMint}
                   loading={isLoading}
-                  sx={{ minWidth: '120px' }}
+                  sx={{ minWidth: "120px" }}
                 >
                   Mint NFT
                 </LoadingButton>
               </Box>
               {showAlert && (
                 <Fade in={showAlert}>
-                  <Alert severity={alertType} onClose={() => setShowAlert(false)} sx={{ mb: 2 }}>
-                    <AlertTitle>{alertType === 'success' ? 'Success' : 'Error'}</AlertTitle>
+                  <Alert
+                    severity={alertType}
+                    onClose={() => setShowAlert(false)}
+                    sx={{ mb: 2 }}
+                  >
+                    <AlertTitle>
+                      {alertType === "success" ? "Success" : "Error"}
+                    </AlertTitle>
                     {alertMessage}
                   </Alert>
                 </Fade>
               )}
-              <Typography variant="h4" component="h2" gutterBottom>
-                Messages
-              </Typography>
-              <Paper elevation={3} sx={{ p: 2, backgroundColor: 'background.paper' }}>
-                <List>
-                  {messages.slice().reverse().map((message, index) => (
-                    <React.Fragment key={index}>
-                      {index > 0 && <Divider />}
-                      <ListItem alignItems="flex-start">
-                        <ListItemText
-                          primary={`Author: ${message.author}`}
-                          secondary={
-                            <React.Fragment>
-                              <Typography component="span" variant="body2" color="text.primary">
-                                Content: {message.content}
-                              </Typography>
-                              <br />
-                              <Typography component="span" variant="body2">
-                                Address: {message.from}
-                              </Typography>
-                              <br />
-                              <Typography component="span" variant="body2">
-                                Token ID: {message.tokenId.toString()}
-                              </Typography>
-                              <br />
-                              <Typography component="span" variant="body2">
-                                Timestamp: {new Date(message.timestamp * 1000).toLocaleString()}
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                      </ListItem>
-                    </React.Fragment>
-                  ))}
-                </List>
-              </Paper>
+              <Box sx={{ mt: 4 }}>
+  <Typography variant="h4" component="h2" gutterBottom>
+    Messages
+  </Typography>
+  <Paper elevation={0} sx={{ p: 2, backgroundColor: "transparent" }}> {/* Transparent Paper */}
+    <List>
+      {messages
+        .slice()
+        .reverse()
+        .map((message, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && <Divider sx={{ backgroundColor: "transparent" }} />} {/* Transparent Divider */}
+            <ListItem alignItems="flex-start" sx={{ backgroundColor: "transparent" }}> {/* Transparent ListItem */}
+              <ListItemText
+                primary={
+                  <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                    Author: {message.author}
+                  </Typography>
+                }
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      Content: {message.content}
+                    </Typography>
+                    <br />
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      Address: {message.from}
+                    </Typography>
+                    <br />
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      Token ID: {message.tokenId.toString()}
+                    </Typography>
+                    <br />
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{ fontWeight: "bold" }}
+                    >
+                      Timestamp:{" "}
+                      {new Date(message.timestamp * 1000).toLocaleString()}
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+          </React.Fragment>
+        ))}
+    </List>
+  </Paper>
+</Box>
             </Box>
           ) : (
-            <Box sx={{ textAlign: 'center' }}>
-              <SetupTutorial />
+            <Box sx={{ textAlign: "center" }}>
+              <Paper
+                elevation={3}
+                sx={{ p: 3, mb: 4, backgroundColor: "rgba(13, 33, 55, 0.8)" }}
+              >
+                <SetupTutorial />
+              </Paper>
               <LoadingButton
                 variant="contained"
                 color="primary"
@@ -268,7 +382,7 @@ const App: React.FC = () => {
         <Footer />
       </Box>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isLoading}
       >
         <CircularProgress color="inherit" />
