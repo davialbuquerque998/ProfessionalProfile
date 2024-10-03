@@ -247,7 +247,7 @@ const App: React.FC = () => {
               component="h1"
               gutterBottom
               align="center"
-              sx={{ color: "primary.light" }}
+              sx={{ color: "primary.light", fontFamily:"Lato, sans-serif", fontWeight:"bold" }}
             >
               Welcome to the Random Orca NFT Minter!
             </Typography>
@@ -261,7 +261,7 @@ const App: React.FC = () => {
                 <Typography
                   variant="body1"
                   paragraph
-                  sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
+                  sx={{ fontWeight: "bold", fontFamily: "Lato, sans-serif" }}
                 >
                   This Dapp allows you to share your thoughts, compliments, or
                   suggestions with me as I continue to develop my blockchain

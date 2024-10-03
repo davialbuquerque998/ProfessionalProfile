@@ -4,7 +4,10 @@ import {
   Accordion, 
   AccordionSummary, 
   AccordionDetails, 
-  Link 
+  Link,
+  List,
+  ListItem,
+  ListItemText
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -30,12 +33,24 @@ const SetupTutorial: React.FC = () => {
           <Typography variant="h6">1. Install MetaMask</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ol>
-            <li>Visit the <Link href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer">MetaMask website</Link>.</li>
-            <li>Click on "Install MetaMask for [Your Browser]".</li>
-            <li>Follow the installation prompts in your browser.</li>
-            <li>Once installed, click on the MetaMask extension icon and follow the setup wizard to create a new wallet.</li>
-          </ol>
+          <List>
+            <ListItem>
+              <ListItemText primary="Visit the MetaMask website." secondary={
+                <Link href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer">
+                  https://metamask.io/download/
+                </Link>
+              } />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Click on "Install MetaMask for [Your Browser]".' />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Follow the installation prompts in your browser." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Once installed, click on the MetaMask extension icon and follow the setup wizard to create a new wallet." />
+            </ListItem>
+          </List>
         </AccordionDetails>
       </Accordion>
 
@@ -44,20 +59,41 @@ const SetupTutorial: React.FC = () => {
           <Typography variant="h6">2. Add Holesky Testnet to MetaMask</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ol>
-            <li>Open MetaMask and click on the network dropdown at the top of the extension.</li>
-            <li>Scroll down and click on "Add network".</li>
-            <li>In the "Add a network manually" section, enter the following details:
-              <ul>
-                <li>Network Name: Holesky</li>
-                <li>New RPC URL: https://ethereum-holesky.publicnode.com</li>
-                <li>Chain ID: 17000</li>
-                <li>Currency Symbol: ETH</li>
-                <li>Block Explorer URL: https://holesky.etherscan.io</li>
-              </ul>
-            </li>
-            <li>Click "Save".</li>
-          </ol>
+          <List>
+            <ListItem>
+              <ListItemText primary="Open MetaMask and click on the network dropdown at the top of the extension." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Scroll down and click on "Add network".' />
+            </ListItem>
+            <ListItem>
+              <ListItemText 
+                primary='In the "Add a network manually" section, enter the following details:'
+                secondary={
+                  <List dense>
+                    <ListItem>
+                      <ListItemText primary="Network Name: Holesky" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="New RPC URL: https://ethereum-holesky.publicnode.com" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Chain ID: 17000" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Currency Symbol: ETH" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Block Explorer URL: https://holesky.etherscan.io" />
+                    </ListItem>
+                  </List>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Click "Save".' />
+            </ListItem>
+          </List>
         </AccordionDetails>
       </Accordion>
 
@@ -66,13 +102,30 @@ const SetupTutorial: React.FC = () => {
           <Typography variant="h6">3. Get Holesky Testnet ETH</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ol>
-            <li>Ensure you're connected to the Holesky network in MetaMask.</li>
-            <li>Copy your wallet address by clicking on your account name in MetaMask.</li>
-            <li>Visit the <Link href="https://cloud.google.com/application/web3/faucet/ethereum/holesky" target="_blank" rel="noopener noreferrer">Holesky Faucet</Link>.</li>
-            <li>Paste your wallet address into the faucet and complete any verification steps.</li>
-            <li>Click "Send me ETH" to receive testnet ETH.</li>
-          </ol>
+          <List>
+            <ListItem>
+              <ListItemText primary="Ensure you're connected to the Holesky network in MetaMask." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Copy your wallet address by clicking on your account name in MetaMask." />
+            </ListItem>
+            <ListItem>
+              <ListItemText 
+                primary="Visit the Holesky Faucet." 
+                secondary={
+                  <Link href="https://cloud.google.com/application/web3/faucet/ethereum/holesky" target="_blank" rel="noopener noreferrer">
+                    https://cloud.google.com/application/web3/faucet/ethereum/holesky
+                  </Link>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Paste your wallet address into the faucet and complete any verification steps." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Click "Send me ETH" to receive testnet ETH.' />
+            </ListItem>
+          </List>
         </AccordionDetails>
       </Accordion>
 
@@ -81,12 +134,20 @@ const SetupTutorial: React.FC = () => {
           <Typography variant="h6">4. Connect to the Dapp</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <ol>
-            <li>Return to our Dapp page.</li>
-            <li>Click the "Connect Wallet" button.</li>
-            <li>Select your MetaMask account when prompted.</li>
-            <li>You're now connected and ready to mint NFTs!</li>
-          </ol>
+          <List>
+            <ListItem>
+              <ListItemText primary="Return to our Dapp page." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Click the "Connect Wallet" button.' />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="Select your MetaMask account when prompted." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="You're now connected and ready to mint NFTs!" />
+            </ListItem>
+          </List>
         </AccordionDetails>
       </Accordion>
 
