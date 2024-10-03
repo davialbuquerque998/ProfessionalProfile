@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { connectWallet, safeMint, isConnected, getMessages } from "./services/Web3Service";
-import SetupTutorial from './services/setupTutorial';
-import Footer from './services/Footer';
+import React, { useState, useEffect } from "react";
+import { connectWallet, safeMint, getMessages } from "./services/Web3Service";
+import SetupTutorial from "./services/setupTutorial";
+import Footer from "./services/Footer";
 
 interface Message {
   from: string;
@@ -14,38 +14,30 @@ interface Message {
 const App: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [account, setAccount] = useState<string | null>(null);
-  const [author, setAuthor] = useState<string>('');
-  const [content, setContent] = useState<string>('');
+  const [author, setAuthor] = useState<string>("");
+  const [content, setContent] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    checkConnection();
-    fetchMessages();
+    if (isConnected) {
+      fetchMessages();
+    }
 
     // Add event listener for account changes
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
     }
 
     // Cleanup function to remove the event listener
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener(
+          "accountsChanged",
+          handleAccountsChanged
+        );
       }
     };
-  }, []);
-
-  const checkConnection = async () => {
-    try {
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-      if (accounts.length > 0) {
-        setIsConnected(true);
-        setAccount(accounts[0]);
-      }
-    } catch (error) {
-      console.error("Failed to check connection:", error);
-    }
-  };
+  }, [isConnected]);
 
   const fetchMessages = async () => {
     try {
@@ -88,8 +80,8 @@ const App: React.FC = () => {
     try {
       await safeMint(author, content);
       alert("NFT minted successfully!");
-      setAuthor('');
-      setContent('');
+      setAuthor("");
+      setContent("");
       fetchMessages();
     } catch (error) {
       console.error("Failed to mint NFT:", error);
@@ -99,57 +91,87 @@ const App: React.FC = () => {
 
   return (
     <>
-    <div>
-      <h1>Random Orca NFT Minter</h1>
-      {isConnected ? (
-        <div>
-          <p>Connected Account: {account}</p>
+      <div>
+        <h1>Welcome to the Random Orca NFT Minter!</h1>
+        {isConnected ? (
           <div>
-            <input
-              type="text"
-              placeholder="Author"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <button onClick={handleMint}>
-              Mint NFT
-            </button>
-          </div>
-          <div>
-          <h2>Messages</h2>
-          <div style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
-            {messages.slice().reverse().map((message, index) => (
-              <div key={index} style={{ marginBottom: '10px' }}>
-                <p><strong>Address:</strong> {message.from}</p>
-                <p><strong>Author:</strong> {message.author}</p>
-                <p><strong>Content:</strong> {message.content}</p>
-                <p><strong>Token ID:</strong> {message.tokenId.toString()}</p>
-                <p><strong>Timestamp:</strong> {new Date(message.timestamp * 1000).toLocaleString()}</p>
-                <hr />
+            <p>
+              This Dapp allows you to share your thoughts, compliments, or
+              suggestions with me as I continue to develop my blockchain
+              projects. Simply write a message, and as a token of appreciation,
+              you will receive a unique and playful Orca NFT directly to your
+              wallet!
+            </p>
+            <p>
+              Whether you'd like to give feedback on my work or just say hello,
+              your message matters. Once submitted, your NFT will be minted to
+              commemorate your contribution.
+            </p>
+            <p>
+              Connect your wallet, send me a message, and claim your very own
+              Orca NFT—it’s easy, fun, and completely free on the testnet!
+            </p>
+            <p>Connected Account: {account}</p>
+            <div>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Your message"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+              <button onClick={handleMint}>Mint NFT</button>
+            </div>
+            <div>
+              <h2>Messages</h2>
+              <div
+                style={{
+                  border: "1px solid black",
+                  padding: "10px",
+                  margin: "10px 0",
+                }}
+              >
+                {messages
+                  .slice()
+                  .reverse()
+                  .map((message, index) => (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                      <p>
+                        <strong>Address:</strong> {message.from}
+                      </p>
+                      <p>
+                        <strong>Author:</strong> {message.author}
+                      </p>
+                      <p>
+                        <strong>Content:</strong> {message.content}
+                      </p>
+                      <p>
+                        <strong>Token ID:</strong> {message.tokenId.toString()}
+                      </p>
+                      <p>
+                        <strong>Timestamp:</strong>{" "}
+                        {new Date(message.timestamp * 1000).toLocaleString()}
+                      </p>
+                      <hr />
+                    </div>
+                  ))}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-        </div>
-      ) : (
-        <>
-          <SetupTutorial/>
-          <button onClick={handleConnect}>
-            Connect Wallet
-          </button>
-        </>
-      )}
-    </div>
-    
-    <Footer/>
+        ) : (
+          <>
+            <SetupTutorial />
+            <button onClick={handleConnect}>Connect Wallet</button>
+          </>
+        )}
+      </div>
+      <Footer />
     </>
-    
   );
 };
 

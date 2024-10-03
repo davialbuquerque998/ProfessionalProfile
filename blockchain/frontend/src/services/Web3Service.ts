@@ -23,11 +23,6 @@ export async function connectWallet(): Promise<string> {
     return accounts[0];
 }
 
-export async function isConnected():Promise<boolean> {
-    const accountZero = await connectWallet();
-    return accountZero.length > 0;
-}
-
 export async function safeMint(author:string, content:string) : Promise<string | null>{
     if(!window.ethereum){
         throw new Error("Please, install your wallet in your browser");
