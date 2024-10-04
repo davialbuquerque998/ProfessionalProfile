@@ -207,11 +207,12 @@ const App: React.FC = () => {
     }
     setIsLoading(true);
     try {
-      await safeMint(author, content);
+      const result = await safeMint(author, content);
       setAlertType("success");
       setAlertMessage(
-        "Please be patient as the blockchain confirms the transaction."
+        `NFT minted successfully!Please be patient as the blockchain confirms the transaction.Check your image at https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmX89szEsBsxTCfBqCNqg1jq8v49AYvxrDrsKWq9cYaNex/${result.imageId}.jpg`
       );
+      alert(`https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmX89szEsBsxTCfBqCNqg1jq8v49AYvxrDrsKWq9cYaNex/${result.imageId}.jpg`);
       setShowAlert(true);
       setAuthor("");
       setContent("");

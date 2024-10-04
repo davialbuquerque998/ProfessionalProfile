@@ -12,7 +12,7 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     uint256 private _nextTokenId = 1;
     uint256 private constant MAX_IMAGES = 12;
 
-    event MessagePosted(address indexed from, string author, string content, uint256 indexed tokenId, uint256 timestamp);
+    event MessagePosted(address indexed from, string author, string content, uint256 indexed tokenId, uint256 imageId, uint256 timestamp);
     event MessageDeleted(address indexed from, uint256 indexed tokenId, uint256 timestamp);
 
     struct Message {
@@ -49,10 +49,12 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
             timestamp:timestamp
         }));
 
-        emit MessagePosted(msg.sender, author, content, _nextTokenId, timestamp);
+        uint256 imageId = ((_nextTokenId - 1) % MAX_IMAGES) + 1;
+
+        emit MessagePosted(msg.sender, author, content,_nextTokenId, imageId, timestamp);
 
         _safeMint(msg.sender, _nextTokenId);
-        uint256 imageId = ((_nextTokenId - 1) % MAX_IMAGES) + 1;
+        
         _setTokenURI(_nextTokenId, Strings.toString(imageId));
         _nextTokenId += 1;
     }

@@ -109,7 +109,7 @@ const SetupTutorial: React.FC = () => {
       </Accordion>
 
       <Typography variant="body1" sx={{ mt: 2 }}>
-        Remember, testnet ETH has no real value and is only for testing purposes. Happy minting!
+        Remember, testnet ETH has no real value and is only for testing purposes!
       </Typography>
     </div>
   );

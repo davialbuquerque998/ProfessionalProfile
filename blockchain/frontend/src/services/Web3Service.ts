@@ -68,21 +68,39 @@ export async function connectWallet(): Promise<string> {
     throw error;
   }
 }
-export async function safeMint(author:string, content:string) : Promise<string | null>{
-    if(!window.ethereum){
-        throw new Error("Please, install your wallet in your browser");
-    }
-    const provider = new ethers.BrowserProvider(window.ethereum);
+export async function safeMint(author:string, content:string): Promise<{ hash: string, imageId: number }> {
+  if(!window.ethereum){
+      throw new Error("Please, install your wallet in your browser");
+  }
+  const provider = new ethers.BrowserProvider(window.ethereum);
 
-    const contract = new ethers.Contract(RANDOM_ORCA_ADDRESS, RANDOM_ORCA_ABI, provider);
+  const contract = new ethers.Contract(RANDOM_ORCA_ADDRESS, RANDOM_ORCA_ABI, provider);
 
-    const signer = await provider.getSigner();
+  const signer = await provider.getSigner();
 
-    const instance = contract.connect(signer) as Contract;
+  const instance = contract.connect(signer) as Contract;
 
-    const tx = await instance.safeMint(author, content);
+  const tx = await instance.safeMint(author, content);
 
-    return tx.hash;
+  // Wait for the transaction to be mined
+  const receipt = await tx.wait();
+
+  // Find the MessagePosted event in the transaction receipt
+  const event = receipt.logs.find(
+    (log: any) => log.topics[0] === ethers.id("MessagePosted(address,string,string,uint256,uint256,uint256)")
+  );
+
+  if (!event) {
+    throw new Error("MessagePosted event not found in transaction receipt");
+  }
+
+  // Decode the event data
+  const decodedEvent = contract.interface.parseLog({ topics: event.topics, data: event.data });
+
+  // Extract the imageId from the event
+  const imageId = decodedEvent?.args?.imageId;
+
+  return { hash: tx.hash, imageId: Number(imageId) };
 }
 
 export const getMessages = async () => {

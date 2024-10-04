@@ -20,7 +20,7 @@ const Header: React.FC = () => {
             color="inherit"
             underline="none"
             onClick={handleWelcomeClick}
-            sx={{ cursor: 'pointer' }}
+            sx={{ cursor: 'pointer', textTransform:"uppercase", fontWeight:"bolder",'&:hover': { textDecoration: 'underline', fontWeight:"bolder", } }}
           >
             Welcome
           </Link>
@@ -31,9 +31,9 @@ const Header: React.FC = () => {
             href="https://davialbuquerque998.github.io/ProfessionalProfile/"
             target="_blank"
             rel="noopener noreferrer"
-            sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+            sx={{ textDecoration: 'none',fontWeight:"bolder",textTransform:"uppercase", '&:hover': { textDecoration: 'underline', fontWeight:"bolder" } }}
           >
-            Contact
+            Contact me
           </Link>
         </Box>
       </Toolbar>
