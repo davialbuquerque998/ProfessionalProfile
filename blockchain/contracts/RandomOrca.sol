@@ -31,7 +31,7 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/";
+        return "ipfs://QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/";
     }
 
     function safeMint(string calldata author, string calldata content)

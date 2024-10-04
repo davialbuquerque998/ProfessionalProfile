@@ -28,7 +28,7 @@ describe("Random Orca Tests", function () {
 
     const tokenURI = await RandomOrcaInstance.tokenURI(1);
 
-    expect(tokenURI).to.equal("https://coffee-holy-toucan-222.mypinata.cloud/ipfs/QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/1.json");
+    expect(tokenURI).to.equal("ipfs://QmQqS7grnEoeWiVvv2HgDvDVs7KXzD3eoVJbRw62TDyymY/1.json");
     
   });
 
