@@ -53,10 +53,53 @@ const SetupTutorial: React.FC = () => {
           </List>
         </AccordionDetails>
       </Accordion>
-
+      
       <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">2. Get Holesky Testnet ETH</Typography>
+          <Typography variant="h6">2. Add Holesky Testnet to MetaMask</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <List>
+            <ListItem>
+              <ListItemText primary="Open MetaMask and click on the network dropdown at the top of the extension." />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Scroll down and click on "Add network".' />
+            </ListItem>
+            <ListItem>
+              <ListItemText 
+                primary='In the "Add a network manually" section, enter the following details:'
+                secondary={
+                  <List dense>
+                    <ListItem>
+                      <ListItemText primary="Network Name: Holesky" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="New RPC URL: https://ethereum-holesky.publicnode.com" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Chain ID: 17000" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Currency Symbol: ETH" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Block Explorer URL: https://holesky.etherscan.io" />
+                    </ListItem>
+                  </List>
+                }
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary='Click "Save".' />
+            </ListItem>
+          </List>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h6">3. Get Holesky Testnet ETH</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List>
@@ -86,9 +129,9 @@ const SetupTutorial: React.FC = () => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+      <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6">3. Connect to the Dapp</Typography>
+          <Typography variant="h6">4. Connect to the Dapp</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List>
