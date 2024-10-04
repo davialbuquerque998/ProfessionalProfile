@@ -25,7 +25,7 @@ const SetupTutorial: React.FC = () => {
       </Typography>
       
       <Typography variant="body1" paragraph>
-        Before you can start minting NFTs, you'll need to set up MetaMask and connect to the Holesky Ethereum testnet.
+        Before you can start minting NFTs, you will need to set up MetaMask and connect to the Holesky Ethereum testnet.
       </Typography>
 
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
