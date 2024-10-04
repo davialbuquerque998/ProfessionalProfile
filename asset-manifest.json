@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/ProfessionalProfile/blockchain/frontend/static/js/main.69c9ed0a.js",
+    "index.html": "/ProfessionalProfile/blockchain/frontend/index.html",
+    "main.69c9ed0a.js.map": "/ProfessionalProfile/blockchain/frontend/static/js/main.69c9ed0a.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.69c9ed0a.js"
+  ]
+}
