@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   connectWallet,
-  safeMint,
+  safeMint, 
   getMessages,
   RANDOM_ORCA_ADDRESS,
 } from "./services/Web3Service";
@@ -306,7 +306,7 @@ const App: React.FC = () => {
                   variant="body1"
                   sx={{ fontWeight: "bold", fontFamily: "Arial, sans-serif" }}
                 >
-                  We assure you that no orcas were harmed in the making of this project. All images were created using artificial intelligence. May these majestic creatures continue to swim freely in the oceans!
+                  We assure you that no orcas were harmed in the making of this project. All images were created using artificial intelligence. May these majestic creatures continue to swim freely in the oceans! 
                 </Typography>
               </Paper>
 
