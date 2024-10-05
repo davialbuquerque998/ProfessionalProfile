@@ -13,7 +13,7 @@ const PORT: number = parseInt(`${process.env.PORT}`);
 
 const TO_ADDRESS:string = `${process.env.TO_ADDRESS}`;
 
-app.use(cors({origin:"http://127.0.0.1:5500"}));
+app.use(cors({origin:"https://davialbuquerque998.github.io/ProfessionalProfile/"}));
 app.use(morgan("tiny"));
 app.use(express.json());
 
@@ -38,12 +38,13 @@ app.post("/contact", [
 
     try {
         await emailSender(name, email, TO_ADDRESS, subject, message);
-        console.log("It works, ieeei");
+        console.log("It works");
         res.status(200).send("It worked");
         return;
     } catch (error) {
-        console.log("It did not work, paia demais");
+        console.log("It did not work");
         res.status(200).send("It should work, but it did not");
+        return;
     }
     
     
