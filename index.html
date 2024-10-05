@@ -354,8 +354,9 @@
 										<p>davialbuquerque998@gmail.com</p>
 									</div>
 									<div class="single-contact-add-info">
-										<h3>website</h3>
-										<p>www.myfuturewebsite.com</p>
+										<h3 class="use-my-dapp">Dapp!👇</h3>
+										<a target="_blank" href="https://professional-profile-beta.vercel.app/" style="font-weight: bolder; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Orca NFT</a>
+										
 									</div>
 								</div>
 							</div>
@@ -443,6 +444,7 @@
 				'graduation-university': 'University of Victoria',
 				'location': 'British Columbia, Canada',
 				'graduation-skills': 'Completed the English course as part of the University Level Admission Program',
+				'use-my-dapp':'👇Project!'
 			},
 			[LANGUAGES.PT_BR]: {
 				welcome: 'Bem-vindo',
@@ -478,6 +480,7 @@
 				'graduation-university': 'Universidade de Victoria',
 				'location': 'Colúmbia Britânica, Canadá',
 				'graduation-skills': 'Concluí o curso de inglês como parte do Programa de Admissão de Nível Universitário',
+				'use-my-dapp':'👇Projeto'
 			}
 		};
 
@@ -504,7 +507,8 @@
 			messageInput: document.getElementById('message'),
 			submitButton: document.getElementById('submitButton'),
 			copyright: document.getElementById('davi-copyright'),
-			jobDescription: document.querySelector(".contact-add-head > p")
+			jobDescription: document.querySelector(".contact-add-head > p"),
+			singleContactAddInfo: document.querySelector(".use-my-dapp")
 		};
 
 		function changeLanguage(lang) {
@@ -544,6 +548,7 @@
 			elements.submitButton.textContent = translations[currentLanguage]['submit-button'];
 			elements.jobDescription.textContent = translations[currentLanguage]['job-description'];
 			elements.copyright.textContent = translations[currentLanguage]['copyright'];
+			elements.singleContactAddInfo.textContent = translations[currentLanguage]['use-my-dapp'];
 		}
 
 		function updateResumeLink() {
