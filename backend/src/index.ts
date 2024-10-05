@@ -8,12 +8,12 @@ import emailSender from "./mail/sendMailer";
 dotenv.config();
 
 const app = express();
-const PORT: number = parseInt(`${process.env.PORT}`);
+const PORT: number = parseInt(`${process.env.PORT}`) || 3000;
 
 
 const TO_ADDRESS:string = `${process.env.TO_ADDRESS}`;
 
-app.use(cors({origin:"https://davialbuquerque998.github.io/ProfessionalProfile/"}));
+app.use(cors({origin: ["https://davialbuquerque998.github.io", "https://professionalprofileserver.onrender.com"]}));
 app.use(morgan("tiny"));
 app.use(express.json());
 
