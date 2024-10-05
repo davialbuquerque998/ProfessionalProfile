@@ -15,6 +15,8 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     event MessagePosted(address indexed from, string author, string content, uint256 indexed tokenId, uint256 imageId, uint256 timestamp);
     event MessageDeleted(address indexed from, uint256 indexed tokenId, uint256 timestamp);
 
+    mapping(uint256 => uint256) tokenIdPositionInMessages;
+
     struct Message {
         address from;
         string author;
@@ -41,6 +43,8 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         require(bytes(author).length > 0, "Empty names are not allowed");
         uint256 timestamp = block.timestamp;
 
+        tokenIdPositionInMessages[_nextTokenId] = messages.length;
+
         messages.push(Message({
             from:msg.sender,
             author:author,
@@ -65,13 +69,10 @@ contract RandomOrca is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
 
     function burn(uint256 tokenId) public onlyOwner {
         uint256 timestamp = block.timestamp;
-        for (uint256 i = 0; i < messages.length; i++) {
-            if(tokenId == messages[i].tokenId){
-                emit MessageDeleted(messages[i].from, messages[i].tokenId, timestamp);
-                messages[i] = messages[messages.length - 1];
-                messages.pop();
-            }
-        }
+        uint256 position = tokenIdPositionInMessages[tokenId];
+        emit MessageDeleted(messages[position].from, messages[position].tokenId, timestamp);
+        messages[position] = messages[messages.length - 1];
+        messages.pop();
         _burn(tokenId);
     }
 
