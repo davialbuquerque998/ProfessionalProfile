@@ -334,6 +334,14 @@
 												<button type="submit" class="contact-btn" id="submitButton"
 													style="width: 100%;">Submit</button>
 											</div>
+											<div id="loadingContainer"
+												style="display: none; text-align: center; margin-top: 20px;">
+												<div class="spinner-border text-primary" role="status">
+													<span class="sr-only">Loading...</span>
+												</div>
+												<p id="countdownTimer" style="margin-top: 10px;">Time remaining: 60
+													seconds</p>
+											</div>
 										</div>
 									</div>
 								</form>
@@ -355,8 +363,11 @@
 									</div>
 									<div class="single-contact-add-info">
 										<h3 class="use-my-dapp">Dapp!👇</h3>
-										<a target="_blank" href="https://professional-profile-beta.vercel.app/" style="font-weight: bolder; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">Orca NFT</a>
-										
+										<a target="_blank" href="https://professional-profile-beta.vercel.app/"
+											style="font-weight: bolder; text-decoration: none;"
+											onmouseover="this.style.textDecoration='underline';"
+											onmouseout="this.style.textDecoration='none';">Orca NFT</a>
+
 									</div>
 								</div>
 							</div>
@@ -444,7 +455,7 @@
 				'graduation-university': 'University of Victoria',
 				'location': 'British Columbia, Canada',
 				'graduation-skills': 'Completed the English course as part of the University Level Admission Program',
-				'use-my-dapp':'👇Project!'
+				'use-my-dapp': '👇Project!'
 			},
 			[LANGUAGES.PT_BR]: {
 				welcome: 'Bem-vindo',
@@ -480,13 +491,13 @@
 				'graduation-university': 'Universidade de Victoria',
 				'location': 'Colúmbia Britânica, Canadá',
 				'graduation-skills': 'Concluí o curso de inglês como parte do Programa de Admissão de Nível Universitário',
-				'use-my-dapp':'👇Projeto'
+				'use-my-dapp': '👇Projeto'
 			}
 		};
 
 		let currentLanguage = LANGUAGES.EN;
 
-		
+
 		const elements = {
 			resumeLink: document.getElementById('davi-resume-download-link'),
 			usFlag: document.getElementById('us-flag-element'),
@@ -564,13 +575,28 @@
 		document.addEventListener('DOMContentLoaded', function () {
 			const form = document.getElementById('contactForm');
 			const formStatus = document.getElementById('formStatus');
+			const submitButton = document.getElementById('submitButton');
+			const loadingContainer = document.getElementById('loadingContainer');
+			const countdownTimer = document.getElementById('countdownTimer');
+			let countdownInterval;
 
 			form.addEventListener('submit', async function (event) {
 				event.preventDefault();
 
 				// Disable submit button and show loading state
-				elements.submitButton.disabled = true;
-				elements.submitButton.textContent = translations[currentLanguage]['sending'];
+				submitButton.disabled = true;
+				submitButton.textContent = translations[currentLanguage]['sending'];
+				loadingContainer.style.display = 'block';
+
+				// Start countdown
+				let secondsLeft = 60;
+				countdownInterval = setInterval(() => {
+					secondsLeft--;
+					countdownTimer.textContent = `Time remaining: ${secondsLeft} seconds`;
+					if (secondsLeft <= 0) {
+						clearInterval(countdownInterval);
+					}
+				}, 1000);
 
 				if (!validateForm()) {
 					resetSubmitButton();
@@ -630,8 +656,10 @@
 			}
 
 			function resetSubmitButton() {
-				elements.submitButton.disabled = false;
-				elements.submitButton.textContent = translations[currentLanguage]['submit-button'];
+				submitButton.disabled = false;
+				submitButton.textContent = translations[currentLanguage]['submit-button'];
+				loadingContainer.style.display = 'none';
+				clearInterval(countdownInterval);
 			}
 		});
 
