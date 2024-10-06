@@ -13,7 +13,7 @@ const PORT: number = parseInt(`${process.env.PORT}`) || 3000;
 
 const TO_ADDRESS:string = `${process.env.TO_ADDRESS}`;
 
-app.use(cors({origin: ["https://davialbuquerque998.github.io", "https://professionalprofileserver.onrender.com"]}));
+app.use(cors({origin: ["http://127.0.0.1:5500/","https://davialbuquerque998.github.io", "https://professionalprofileserver.onrender.com"]}));
 app.use(morgan("tiny"));
 app.use(express.json());
 
